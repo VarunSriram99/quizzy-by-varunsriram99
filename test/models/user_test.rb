@@ -4,7 +4,9 @@ require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @user = User.new(first_name: "Sam", last_name: "Smith", email: "sam@example.com", role: "standard")
+    @user = User.new(
+      first_name: "Sam", last_name: "Smith", email: "sam@example.com", role: "standard",
+      password: "password", password_confirmation: "password")
   end
 
   def test_user_should_be_valid
@@ -49,7 +51,8 @@ class UserTest < ActiveSupport::TestCase
   end
 
   def test_email_address_should_be_saved_as_lowercase
-    user2 = User.new(first_name: "Oliver", last_name: "Smith", email: "OLIVER@example.com")
+    user2 = @user.dup
+    user2.email = "OLIVER@example.com"
     user2.save
     assert user2.email == user2.email.downcase
   end
@@ -77,5 +80,31 @@ fishy+#.com]
     @user.role = nil
     assert_not @user.valid?
     assert_equal ["Role can't be blank"], @user.errors.full_messages
+  end
+
+  def test_password_can_not_be_blank
+    @user.password = nil
+    assert_not @user.valid?
+    assert_equal ["Password can't be blank"], @user.errors.full_messages
+  end
+
+  def test_password_confirmation_can_not_be_blank
+    @user.password_confirmation = nil
+    assert_not @user.valid?
+    assert_equal ["Password confirmation can't be blank"], @user.errors.full_messages
+  end
+
+  def test_password_should_have_minimum_length
+    @user.password = "pass"
+    @user.password_confirmation = "pass"
+    assert_not @user.valid?
+    assert_equal ["Password is too short (minimum is 7 characters)"], @user.errors.full_messages
+  end
+
+  def test_password_and_password_confirmation_should_match
+    @user.password = "password1"
+    @user.password_confirmation = "password2"
+    assert_not @user.valid?
+    assert_equal ["Password confirmation doesn't match Password"], @user.errors.full_messages
   end
 end
