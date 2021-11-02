@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
-
   def setup
     @user = User.new(first_name: "Sam", last_name: "Smith", email: "sam@example.com")
   end
@@ -29,13 +30,13 @@ class UserTest < ActiveSupport::TestCase
   end
 
   def test_first_name_should_be_of_valid_length
-    @user.first_name = "a"*100
+    @user.first_name = "a" * 100
     assert_not @user.valid?
     assert_equal ["First name is too long (maximum is 50 characters)"], @user.errors.full_messages
   end
 
   def test_last_name_should_be_of_valid_length
-    @user.last_name = "a"*100
+    @user.last_name = "a" * 100
     assert_not @user.valid?
     assert_equal ["Last name is too long (maximum is 50 characters)"], @user.errors.full_messages
   end
@@ -63,12 +64,12 @@ class UserTest < ActiveSupport::TestCase
   end
 
   def test_email_validation_should_not_accept_invalid_addresses
-    invalid_emails = %w[user@example,com user_at_example.org user.name@example.@sam-sam.com sam@sam+exam.com fishy+#.com]
+    invalid_emails = %w[user@example,com user_at_example.org user.name@example.@sam-sam.com sam@sam+exam.com
+fishy+#.com]
 
     invalid_emails.each do |email|
       @user.email = email
       assert @user.invalid?
     end
   end
-  
 end
