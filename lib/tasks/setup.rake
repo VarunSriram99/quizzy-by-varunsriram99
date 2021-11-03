@@ -4,12 +4,8 @@ task setup: [:environment, 'db:drop', 'db:create', 'db:migrate'] do
 end
 
 task populate_with_sample_data: [:environment] do
-  if Rails.env.production?
-    puts "Skipping deleting and populating sample data in production"
-  else
     create_sample_data!
     puts "sample data has been added."
-  end
 end
 
 def create_sample_data!
