@@ -32,29 +32,27 @@ class UserTest < ActiveSupport::TestCase
   end
 
   def test_first_name_should_be_of_valid_length
-    @user.first_name = "a" * 100
+    @user.first_name = "a" * 51
     assert_not @user.valid?
     assert_equal ["First name is too long (maximum is 50 characters)"], @user.errors.full_messages
   end
 
   def test_last_name_should_be_of_valid_length
-    @user.last_name = "a" * 100
+    @user.last_name = "a" * 51
     assert_not @user.valid?
     assert_equal ["Last name is too long (maximum is 50 characters)"], @user.errors.full_messages
   end
 
   def test_email_should_be_unique
-    @user.save
+    @user.save!
     user2 = @user.dup
     assert_not user2.valid?
     assert_equal ["Email has already been taken"], user2.errors.full_messages
   end
 
   def test_email_address_should_be_saved_as_lowercase
-    user2 = @user.dup
-    user2.email = "OLIVER@example.com"
-    user2.save
-    assert user2.email == user2.email.downcase
+    @user.update!(email: "OLIVER@example.com")
+    assert_equal @user.email, @user.email.downcase
   end
 
   def test_email_validation_should_accept_valid_addresses
@@ -69,10 +67,10 @@ class UserTest < ActiveSupport::TestCase
   def test_email_validation_should_not_accept_invalid_addresses
     invalid_emails = %w[user@example,com user_at_example.org user.name@example.@sam-sam.com sam@sam+exam.com
 fishy+#.com]
-
     invalid_emails.each do |email|
-      @user.email = email
+      @user.update(email: email)
       assert @user.invalid?
+      assert_equal ["Email is invalid"], @user.errors.full_messages
     end
   end
 
@@ -80,6 +78,14 @@ fishy+#.com]
     @user.role = nil
     assert_not @user.valid?
     assert_equal ["Role can't be blank"], @user.errors.full_messages
+  end
+
+  def test_user_should_accept_valid_role
+    valid_roles = %w[administrator standard]
+    valid_roles.each do |role|
+      @user.update(role: role)
+      assert @user.valid?
+    end
   end
 
   def test_password_can_not_be_blank
@@ -95,8 +101,8 @@ fishy+#.com]
   end
 
   def test_password_should_have_minimum_length
-    @user.password = "pass"
-    @user.password_confirmation = "pass"
+    @user.password = "a" * 6
+    @user.password_confirmation = "a" * 6
     assert_not @user.valid?
     assert_equal ["Password is too short (minimum is 7 characters)"], @user.errors.full_messages
   end
