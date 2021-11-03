@@ -1,8 +1,8 @@
 import React from "react";
 
+import Logger from "js-logger";
 import { Button } from "neetoui";
 import { Toastr } from "neetoui";
-import { useHistory } from "react-router";
 import { withRouter } from "react-router-dom";
 
 import authApi from "apis/auth";
@@ -10,7 +10,6 @@ import { resetAuthTokens } from "apis/axios";
 import { getFromLocalStorage, setToLocalStorage } from "helpers/storage";
 
 function ActionBlock() {
-  const history = useHistory();
   const handleLogout = async () => {
     try {
       await authApi.logout();
@@ -22,9 +21,10 @@ function ActionBlock() {
       });
       resetAuthTokens();
       Toastr.success("Logged out successfully");
-      history.push("/");
+      window.location.href = "/";
     } catch (error) {
-      logger.error(error);
+      Logger.error(error);
+      Toastr.error();
     }
   };
   return (
