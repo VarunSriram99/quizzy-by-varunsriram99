@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 import Logger from "js-logger";
 import { Toastr } from "neetoui";
-import { useHistory } from "react-router";
 import { withRouter } from "react-router-dom";
 
 import authApi from "apis/auth";
@@ -14,7 +13,6 @@ import LoginForm from "./LoginForm";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const history = useHistory();
 
   const submitForm = async event => {
     event.preventDefault();
@@ -28,7 +26,7 @@ function Login() {
       });
       setAuthHeaders();
       Toastr.success("Successfully logged in");
-      history.push("/");
+      window.location.href = "/";
     } catch (error) {
       Logger.error(error);
       Toastr.error("Invalid username/password");
@@ -36,7 +34,7 @@ function Login() {
   };
 
   return (
-    <div>
+    <div className="flex h-screen justify-center w-full">
       <LoginForm
         submitForm={submitForm}
         setEmail={setEmail}
