@@ -2,6 +2,7 @@
 
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
+
   def authenticate_user_using_x_auth_token
     user_email = request.headers["X-Auth-Email"]
     auth_token = request.headers["X-Auth-Token"].presence
@@ -13,7 +14,7 @@ class ApplicationController < ActionController::Base
       )
       @current_user = user
     else
-      render status: :unauthorized, json: { error: t("session.could_not_auth") }
+      render status: :unauthorized, json: { error: "could not authenticate session" }
     end
   end
 
