@@ -29,7 +29,7 @@ function Login() {
       window.location.href = "/";
     } catch (error) {
       Logger.error(error);
-      Toastr.error("Invalid username/password");
+      Toastr.error(Error("Invalid username/password"));
     }
   };
 

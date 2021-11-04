@@ -23,6 +23,7 @@ function ActionBlock() {
       window.location.href = "/";
     } catch (error) {
       Logger.error(error);
+      Toastr.error();
     }
   };
   return (
