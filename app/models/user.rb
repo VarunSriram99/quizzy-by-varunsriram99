@@ -3,6 +3,8 @@
 class User < ApplicationRecord
   EMAIL_VALIDATION_REGEX = /\A\w+([\.-]?\w+[+]?)*@\w+([\.-]?\w+)*(\.\w{2,3})+\z/.freeze
 
+  has_many :quizzes
+
   enum role: { standard: 0, administrator: 1 }
 
   validates :role, presence: true

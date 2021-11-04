@@ -34,7 +34,7 @@ function Login() {
   };
 
   return (
-    <div>
+    <div className="flex h-screen justify-center w-full">
       <LoginForm
         submitForm={submitForm}
         setEmail={setEmail}

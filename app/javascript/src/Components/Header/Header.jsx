@@ -10,7 +10,7 @@ function HeaderMain({ isLoggedIn }) {
       <Header
         title="Quizzy"
         actionBlock={isLoggedIn && <ActionBlock />}
-        className="ml-2 mr-2"
+        className="mr-2 border-b-2 border-black"
       />
     </div>
   );

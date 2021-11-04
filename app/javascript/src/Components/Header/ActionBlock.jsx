@@ -1,8 +1,7 @@
 import React from "react";
 
 import Logger from "js-logger";
-import { Button } from "neetoui";
-import { Toastr } from "neetoui";
+import { Button, Toastr } from "neetoui";
 import { withRouter } from "react-router-dom";
 
 import authApi from "apis/auth";
@@ -28,15 +27,15 @@ function ActionBlock() {
     }
   };
   return (
-    <div className="mr-4 space-x-4">
-      <Button style="link" size="large" label="Reports" />
+    <div className="mr-4 ">
+      <Button style="text" size="large" label="Reports" />
       <Button
-        style="link"
+        style="text"
         size="large"
         label={getFromLocalStorage("userName")}
       />
       <Button
-        style="link"
+        style="text"
         size="large"
         label="Logout"
         onClick={() => handleLogout()}
