@@ -5,7 +5,7 @@ class User < ApplicationRecord
 
   has_many :quizzes
 
-  enum role: { standard: 0, administrator: 1 }
+  enum role: { standard: 0, administrator: 1 }, _default: "standard"
 
   validates :role, presence: true
   validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: EMAIL_VALIDATION_REGEX }
