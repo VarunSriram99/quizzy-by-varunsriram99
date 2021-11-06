@@ -13,10 +13,12 @@ import HeaderMain from "components/Header/Header";
 import { getFromLocalStorage } from "components/helpers/storage";
 import Login from "components/Login";
 
+import Pageloader from "./Components/Pageloader";
+
 const App = () => {
   const [loading, setLoading] = useState(true);
   const authToken = getFromLocalStorage("authToken");
-  const isLoggedIn = !either(isNil, isEmpty)(authToken) && authToken !== "null";
+  const isLoggedIn = !either(isNil, isEmpty)(authToken) && authToken !== null;
 
   useEffect(() => {
     initializeLogger();
@@ -24,7 +26,7 @@ const App = () => {
   }, []);
 
   if (loading) {
-    return <h1>Loading...</h1>;
+    return <Pageloader />;
   }
 
   return (

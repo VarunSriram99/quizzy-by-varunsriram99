@@ -9,4 +9,11 @@ const getFromLocalStorage = key => {
   return localStorage.getItem(key);
 };
 
-export { setToLocalStorage, getFromLocalStorage };
+const clearFromLocalStorage = () => {
+  localStorage.removeItem("authToken");
+  localStorage.removeItem("authEmail");
+  localStorage.removeItem("authUserId");
+  localStorage.removeItem("userName");
+};
+
+export { setToLocalStorage, getFromLocalStorage, clearFromLocalStorage };

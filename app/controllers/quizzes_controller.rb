@@ -10,7 +10,7 @@ class QuizzesController < ApplicationController
   def create
     @quiz = Quiz.new(quiz_params.merge(user_id: @current_user.id))
     if @quiz.save
-      render status: :ok, json: { notice: "Successfully created quiz", entity: "Quiz" }
+      render status: :ok, json: { notice: t("successfully_created", entity: "Quiz") }
     else
       errors = @quiz.errors.full_messages.to_sentence
       render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages }
