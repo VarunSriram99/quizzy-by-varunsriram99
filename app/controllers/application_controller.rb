@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
       )
       @current_user = user
     else
-      render status: :unauthorized, json: { error: "could not authenticate session" }
+      render status: :unauthorized, json: { error: t("session.could_not_authenticate") }
     end
   end
 

@@ -6,18 +6,13 @@ import { withRouter } from "react-router-dom";
 
 import authApi from "apis/auth";
 import { resetAuthTokens } from "apis/axios";
-import { getFromLocalStorage, setToLocalStorage } from "helpers/storage";
+import { getFromLocalStorage, clearFromLocalStorage } from "helpers/storage";
 
 function ActionBlock() {
   const handleLogout = async () => {
     try {
       await authApi.logout();
-      setToLocalStorage({
-        authToken: null,
-        email: null,
-        userId: null,
-        userName: null,
-      });
+      clearFromLocalStorage();
       resetAuthTokens();
       Toastr.success("Logged out successfully");
       window.location.href = "/";

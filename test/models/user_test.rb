@@ -69,7 +69,7 @@ class UserTest < ActiveSupport::TestCase
 fishy+#.com]
     invalid_emails.each do |email|
       @user.update(email: email)
-      assert @user.invalid?
+      assert_not @user.valid?
       assert_equal ["Email is invalid"], @user.errors.full_messages
     end
   end
@@ -81,11 +81,10 @@ fishy+#.com]
   end
 
   def test_user_should_accept_valid_role
-    valid_roles = %w[administrator standard]
-    valid_roles.each do |role|
-      @user.update(role: role)
-      assert @user.valid?
-    end
+    @user.update!(role: "administrator")
+    assert @user.valid?
+    @user.update!(role: "standard")
+    assert @user.valid?
   end
 
   def test_password_can_not_be_blank
