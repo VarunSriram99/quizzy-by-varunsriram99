@@ -8,10 +8,11 @@ import * as yup from "yup";
 
 import quizApi from "apis/quiz";
 
-function CreateQuiz({
-  isCreateQuestionOpen,
-  setIsCreateQuestionOpen,
+function UpdateQuiz({
+  isUpdateQuestionOpen,
+  setIsUpdateQuestionOpen,
   fetchQuiz,
+  id,
 }) {
   const formikValidationSchema = {
     name: yup.string().trim().required("Quiz name is required"),
@@ -19,13 +20,13 @@ function CreateQuiz({
   const formikInitialValues = { name: "" };
   const handleFormSubmit = async values => {
     try {
-      await quizApi.create({ quiz: values });
+      await quizApi.update(id, { quiz: values });
       fetchQuiz();
-      Toastr.success("Quiz was created successfully!");
+      Toastr.success("Quiz was created updated!");
     } catch {
       Toastr.error();
     }
-    setIsCreateQuestionOpen(false);
+    setIsUpdateQuestionOpen(false);
   };
   return (
     <Formik
@@ -38,11 +39,11 @@ function CreateQuiz({
           <div>
             <Modal
               size="sm"
-              isOpen={isCreateQuestionOpen}
-              onClose={() => setIsCreateQuestionOpen(false)}
+              isOpen={isUpdateQuestionOpen}
+              onClose={() => setIsUpdateQuestionOpen(false)}
             >
               <Modal.Header>
-                <Typography style="h2">Add new quiz</Typography>
+                <Typography style="h2">Update quiz</Typography>
               </Modal.Header>
               <Modal.Body>
                 <Input
@@ -66,7 +67,7 @@ function CreateQuiz({
                   size="large"
                   style="text"
                   className="ml-2"
-                  onClick={() => setIsCreateQuestionOpen(false)}
+                  onClick={() => setIsUpdateQuestionOpen(false)}
                 />
               </Modal.Footer>
             </Modal>
@@ -77,4 +78,4 @@ function CreateQuiz({
   );
 }
 
-export default CreateQuiz;
+export default UpdateQuiz;

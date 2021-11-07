@@ -6,24 +6,30 @@ import { Button, Typography } from "neetoui";
 
 import quizzes from "apis/fetchQuizzes";
 
+import QuizTable from "./QuizTable";
+
 import CreateQuiz from "../CreateQuiz";
 import Pageloader from "../Pageloader";
 
 function ListQuizzes() {
-  const [quizzesList, setQuizzesList] = useState({});
+  const [quizzesList, setQuizzesList] = useState({ quizzes: [] });
   const [isLoading, setIsLoading] = useState(true);
   const [isCreateQuestionOpen, setIsCreateQuestionOpen] = useState(false);
 
-  useEffect(async () => {
+  const fetchQuiz = async () => {
+    const data = await quizzes();
+    setQuizzesList(data["data"]);
+  };
+
+  useEffect(() => {
     try {
-      const data = await quizzes();
-      setQuizzesList(data["data"]);
+      fetchQuiz();
     } catch (error) {
       Logger.log(error);
     } finally {
       setIsLoading(false);
     }
-  }, [isCreateQuestionOpen]);
+  }, []);
   return isLoading ? (
     <Pageloader />
   ) : (
@@ -37,7 +43,9 @@ function ListQuizzes() {
           onClick={() => setIsCreateQuestionOpen(true)}
         />
         {quizzesList["quizzes"].length > 0 ? (
-          <div>{JSON.stringify(quizzesList["quizzes"])}</div>
+          <div>
+            <QuizTable data={quizzesList["quizzes"]} fetchQuiz={fetchQuiz} />
+          </div>
         ) : (
           <div className="w-screen h-screen flex justify-center items-center">
             <Typography style="h3">You have not created any quiz</Typography>
@@ -47,6 +55,7 @@ function ListQuizzes() {
       <CreateQuiz
         isCreateQuestionOpen={isCreateQuestionOpen}
         setIsCreateQuestionOpen={setIsCreateQuestionOpen}
+        fetchQuiz={fetchQuiz}
       />
     </>
   );
