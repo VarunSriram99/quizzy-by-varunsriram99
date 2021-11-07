@@ -1,5 +1,8 @@
 en:
   successfully_created: "%{entity} was created successfully!"
+  successfully_destroyed: "%{entity} was destroyed successfully!"
+  successfully_updated: "%{entity} was updated successfully!"
+  not_found: "%{entity} not found"
   session:
     incorrect_credentials: "Incorrect credentials, try again."
     could_not_authenticate: "Could not authenticate session"
