@@ -8,15 +8,13 @@ import * as yup from "yup";
 
 import quizApi from "apis/quiz";
 
+import { formikInitialValues, formikValidationSchema } from "./constants";
+
 function CreateQuiz({
   isCreateQuestionOpen,
   setIsCreateQuestionOpen,
   fetchQuiz,
 }) {
-  const formikValidationSchema = {
-    name: yup.string().trim().required("Quiz name is required"),
-  };
-  const formikInitialValues = { name: "" };
   const handleFormSubmit = async values => {
     try {
       await quizApi.create({ quiz: values });

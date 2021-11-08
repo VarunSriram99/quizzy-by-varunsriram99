@@ -5,7 +5,7 @@ class CreateQuizzes < ActiveRecord::Migration[6.1]
     create_table :quizzes do |t|
       t.string :name, null: false
       t.string :description
-      t.string :slug
+      t.string :slug, unique: true
       t.boolean :published, default: false
       t.references :user, null: false, foreign_key: true
 
