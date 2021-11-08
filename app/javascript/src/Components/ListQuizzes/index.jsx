@@ -4,12 +4,12 @@ import Logger from "js-logger";
 import { Plus } from "neetoicons";
 import { Button, Typography } from "neetoui";
 
-import quizzes from "apis/fetchQuizzes";
+import fetchQuizzes from "apis/fetchQuizzes";
 
 import QuizTable from "./QuizTable";
 
+import CenteredPageloader from "../CenteredPageloader";
 import CreateQuiz from "../CreateQuiz";
-import Pageloader from "../Pageloader";
 
 function ListQuizzes() {
   const [quizzesList, setQuizzesList] = useState({ quizzes: [] });
@@ -17,7 +17,7 @@ function ListQuizzes() {
   const [isCreateQuestionOpen, setIsCreateQuestionOpen] = useState(false);
 
   const fetchQuiz = async () => {
-    const data = await quizzes();
+    const data = await fetchQuizzes();
     setQuizzesList(data["data"]);
   };
 
@@ -31,7 +31,7 @@ function ListQuizzes() {
     }
   }, []);
   return isLoading ? (
-    <Pageloader />
+    <CenteredPageloader />
   ) : (
     <>
       <div className="flex flex-col m-4">

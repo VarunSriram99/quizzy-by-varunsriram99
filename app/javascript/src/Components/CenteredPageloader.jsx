@@ -2,7 +2,7 @@ import React from "react";
 
 import { PageLoader } from "neetoui";
 
-function Pageloader() {
+function CenteredPageloader() {
   return (
     <div className="h-screen w-screen flex align-middle">
       <PageLoader />
@@ -10,4 +10,4 @@ function Pageloader() {
   );
 }
 
-export default Pageloader;
+export default CenteredPageloader;

@@ -8,12 +8,12 @@ import "react-toastify/dist/ReactToastify.css";
 import { setAuthHeaders } from "apis/axios";
 import { initializeLogger } from "common/logger";
 import PrivateRoute from "components/Common/PrivateRoute";
-import Dashboard from "components/Dashboard";
 import HeaderMain from "components/Header/Header";
 import { getFromLocalStorage } from "components/helpers/storage";
 import Login from "components/Login";
 
-import Pageloader from "./Components/Pageloader";
+import CenteredPageloader from "./Components/CenteredPageloader";
+import Main from "./Main";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -26,7 +26,7 @@ const App = () => {
   }, []);
 
   if (loading) {
-    return <Pageloader />;
+    return <CenteredPageloader />;
   }
 
   return (
@@ -39,7 +39,7 @@ const App = () => {
           path="/"
           redirectRoute="/login"
           condition={isLoggedIn}
-          component={Dashboard}
+          component={Main}
         />
       </Switch>
     </Router>

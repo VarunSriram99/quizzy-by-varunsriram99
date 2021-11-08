@@ -25,9 +25,9 @@ function DeleteQuiz({ isDeleteQuizOpen, setIsDeleteQuizOpen, id, fetchQuiz }) {
         onClose={() => setIsDeleteQuizOpen(false)}
       >
         <Modal.Header>
-          <Typography style="h2">
+          <Typography style="h2" className="flex items-center">
             <Warning />
-            Delete quiz
+            &nbsp; Delete quiz
           </Typography>
         </Modal.Header>
         <Modal.Body>Are you sure you want to delete the quiz?</Modal.Body>

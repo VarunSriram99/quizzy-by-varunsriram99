@@ -3,6 +3,7 @@ import React, { useMemo, useState } from "react";
 import classNames from "classnames";
 import { Edit, Delete } from "neetoicons";
 import { Button } from "neetoui";
+import { useHistory } from "react-router";
 import { useTable } from "react-table";
 
 import DeleteQuiz from "../CreateQuiz/DeleteQuiz";
@@ -12,15 +13,24 @@ function QuizTable({ data, fetchQuiz }) {
   const [isUpdateQuestionOpen, setIsUpdateQuestionOpen] = useState(false);
   const [isDeleteQuizOpen, setIsDeleteQuizOpen] = useState(false);
   const [id, setId] = useState(-1);
+  const history = useHistory();
 
-  const handleDelete = id => {
-    setId(id);
-    setIsDeleteQuizOpen(true);
+  const handleRowClick = (event, rowData) => {
+    event.preventDefault();
+    event.stopPropagation();
+    history.push(`/edit/${rowData.id}`);
   };
 
-  const handleEdit = idValue => {
+  const handleDelete = (id, event) => {
+    setId(id);
+    setIsDeleteQuizOpen(true);
+    event.stopPropagation();
+  };
+
+  const handleEdit = (idValue, event) => {
     setId(idValue);
     setIsUpdateQuestionOpen(true);
+    event.stopPropagation();
   };
   const rowIsEven = key => {
     if (parseInt(key.split("_")[1]) % 2 == 0) return true;
@@ -46,14 +56,14 @@ function QuizTable({ data, fetchQuiz }) {
                 label="Edit"
                 style="secondary"
                 iconPosition="left"
-                onClick={() => handleEdit(value.value)}
+                onClick={e => handleEdit(value.value, e)}
               />
               <Button
                 icon={Delete}
                 label="Delete"
                 style="danger"
                 iconPosition="left"
-                onClick={() => handleDelete(value.value)}
+                onClick={e => handleDelete(value.value, e)}
               />
             </div>
           );
@@ -98,9 +108,13 @@ function QuizTable({ data, fetchQuiz }) {
               <tr
                 key={rowKey}
                 {...row.getRowProps()}
-                className={classNames({
-                  "bg-gray-100": rowIsEven(row.getRowProps().key),
-                })}
+                className={classNames(
+                  {
+                    "bg-gray-100": rowIsEven(row.getRowProps().key),
+                  },
+                  "hover:bg-gray-200 transition duration-300 cursor-pointer"
+                )}
+                onClick={e => handleRowClick(e, row.original)}
               >
                 {row.cells.map(cell => {
                   return (
