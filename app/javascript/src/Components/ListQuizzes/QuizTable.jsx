@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from "react";
 
-import classNames from "classnames";
 import { Edit, Delete } from "neetoicons";
 import { Button } from "neetoui";
 import { useHistory } from "react-router";
@@ -31,11 +30,6 @@ function QuizTable({ data, fetchQuiz }) {
     setId(idValue);
     setIsUpdateQuestionOpen(true);
     event.stopPropagation();
-  };
-  const rowIsEven = key => {
-    if (parseInt(key.split("_")[1]) % 2 == 0) return true;
-
-    return false;
   };
 
   const columns = useMemo(
@@ -81,16 +75,11 @@ function QuizTable({ data, fetchQuiz }) {
     <div className="w-full border h-screen mt-2 border-black p-4">
       <table {...getTableProps()} className="w-full my-4 p-10">
         <thead>
-          {headerGroups.map((headerGroup, key) => (
-            <tr
-              key={key}
-              {...headerGroup.getHeaderGroupProps()}
-              className="pb-2"
-            >
+          {headerGroups.map(headerGroup => (
+            <tr {...headerGroup.getHeaderGroupProps()} className="pb-2">
               {headerGroup.headers.map(column => {
                 return (
                   <th
-                    key={key}
                     {...column.getHeaderProps()}
                     className="text-left border-b-2 p-3 border-black"
                   >
@@ -102,24 +91,17 @@ function QuizTable({ data, fetchQuiz }) {
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {rows.map((row, rowKey) => {
+          {rows.map(row => {
             prepareRow(row);
             return (
               <tr
-                key={rowKey}
                 {...row.getRowProps()}
-                className={classNames(
-                  {
-                    "bg-gray-100": rowIsEven(row.getRowProps().key),
-                  },
-                  "hover:bg-gray-200 transition duration-300 cursor-pointer"
-                )}
+                className="odd:bg-gray-100 hover:bg-gray-200 transition duration-300 cursor-pointer"
                 onClick={e => handleRowClick(e, row.original)}
               >
                 {row.cells.map(cell => {
                   return (
                     <td
-                      key={rowKey}
                       {...cell.getCellProps()}
                       className={cell.column.className}
                     >

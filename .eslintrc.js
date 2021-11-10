@@ -63,6 +63,9 @@ module.exports = {
     curly: ["error", "multi-line"],
     // auto-fixable: Remove the else part, if the "if" or "else-if" chain has a return statement
     "no-else-return": "error",
+    "react/jsx-key": "off",
+    "promise/prefer-await-to-then": "off",
+    "no-redeclare": "off",
     // not-auto-fixable: Prevent un-sanitized dangerouslySetInnerHTML.
     "jam3/no-sanitizer-with-danger": [
       2,

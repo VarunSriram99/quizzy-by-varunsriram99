@@ -56,7 +56,7 @@ function CreateQuiz({
                   label="Submit"
                   size="large"
                   style="primary"
-                  onClick={() => submitForm()}
+                  onClick={submitForm}
                   className="ml-2"
                 />
                 <Button

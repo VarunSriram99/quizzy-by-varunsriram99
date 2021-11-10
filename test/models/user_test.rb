@@ -4,9 +4,7 @@ require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @user = User.new(
-      first_name: "Sam", last_name: "Smith", email: "sam@example.com", role: "standard",
-      password: "password", password_confirmation: "password")
+    @user = build(:user)
   end
 
   def test_user_should_be_valid
@@ -65,7 +63,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   def test_email_validation_should_not_accept_invalid_addresses
-    invalid_emails = %w[user@example,com user_at_example.org user.name@example.@sam-sam.com sam@sam+exam.com
+    invalid_emails = %w[user@example,com user_at_example.org user.name@example. @sam-sam.com sam@sam+exam.com
 fishy+#.com]
     invalid_emails.each do |email|
       @user.update(email: email)
@@ -111,5 +109,11 @@ fishy+#.com]
     @user.password_confirmation = "password2"
     assert_not @user.valid?
     assert_equal ["Password confirmation doesn't match Password"], @user.errors.full_messages
+  end
+
+  def test_authentication_token_should_be_unique
+    @user.save!
+    user2 = create(:user)
+    assert_not_same @user.authentication_token, user2.authentication_token
   end
 end

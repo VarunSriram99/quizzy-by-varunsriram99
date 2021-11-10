@@ -4,9 +4,7 @@ class CreateQuizzes < ActiveRecord::Migration[6.1]
   def change
     create_table :quizzes do |t|
       t.string :name, null: false
-      t.string :description
-      t.string :slug, unique: true
-      t.boolean :published, default: false
+      t.string :slug, index: { unique: true }
       t.references :user, null: false, foreign_key: true
 
       t.timestamps
