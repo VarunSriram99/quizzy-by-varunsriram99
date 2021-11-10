@@ -29,12 +29,7 @@ function ActionBlock() {
         size="large"
         label={getFromLocalStorage("userName")}
       />
-      <Button
-        style="text"
-        size="large"
-        label="Logout"
-        onClick={() => handleLogout()}
-      />
+      <Button style="text" size="large" label="Logout" onClick={handleLogout} />
     </div>
   );
 }

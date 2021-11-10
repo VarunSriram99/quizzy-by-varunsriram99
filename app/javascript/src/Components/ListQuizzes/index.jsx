@@ -17,8 +17,8 @@ function ListQuizzes() {
   const [isCreateQuestionOpen, setIsCreateQuestionOpen] = useState(false);
 
   const fetchQuiz = async () => {
-    const data = await fetchQuizzes();
-    setQuizzesList(data["data"]);
+    const { data } = await fetchQuizzes();
+    setQuizzesList(data);
   };
 
   useEffect(() => {

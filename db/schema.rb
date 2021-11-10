@@ -12,16 +12,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_04_090316) do
+ActiveRecord::Schema.define(version: 2021_11_09_120031) do
+
+  create_table "options", force: :cascade do |t|
+    t.string "option", null: false
+    t.integer "option_number", null: false
+    t.integer "question_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["question_id"], name: "index_options_on_question_id"
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.string "question", null: false
+    t.integer "correct_option"
+    t.integer "quiz_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["quiz_id"], name: "index_questions_on_quiz_id"
+  end
 
   create_table "quizzes", force: :cascade do |t|
     t.string "name", null: false
-    t.string "description"
     t.string "slug"
-    t.boolean "published", default: false
     t.integer "user_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["slug"], name: "index_quizzes_on_slug", unique: true
     t.index ["user_id"], name: "index_quizzes_on_user_id"
   end
 
@@ -37,5 +54,7 @@ ActiveRecord::Schema.define(version: 2021_11_04_090316) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "options", "questions"
+  add_foreign_key "questions", "quizzes"
   add_foreign_key "quizzes", "users"
 end

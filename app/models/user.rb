@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
-  EMAIL_VALIDATION_REGEX = /\A\w+([\.-]?\w+[+]?)*@\w+([\.-]?\w+)*(\.\w{2,3})+\z/.freeze
+  EMAIL_VALIDATION_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i.freeze
 
   has_many :quizzes
 

@@ -14,7 +14,7 @@ function DeleteQuiz({ isDeleteQuizOpen, setIsDeleteQuizOpen, id, fetchQuiz }) {
     } catch {
       Toastr.error();
     } finally {
-      setIsDeleteQuizOpen(close);
+      setIsDeleteQuizOpen(false);
     }
   };
   return (
@@ -37,7 +37,7 @@ function DeleteQuiz({ isDeleteQuizOpen, setIsDeleteQuizOpen, id, fetchQuiz }) {
             label="Submit"
             size="large"
             style="danger"
-            onClick={() => handleDelete()}
+            onClick={handleDelete}
             className="ml-2"
           />
           <Button

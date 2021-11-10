@@ -6,31 +6,52 @@ import { useParams } from "react-router";
 
 import quizApi from "apis/quiz";
 
+import ListQuestions from "./ListQuestions";
+import Create from "./Question";
+
+import CenteredPageloader from "../CenteredPageloader";
+
 function EditQuiz() {
   const { id } = useParams();
   const [data, setData] = useState({});
+  const [isCreateQuestionOpen, setIsCreateQuestionOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(async () => {
+  const updateQuestion = async () => {
+    setIsLoading(true);
     setData(await quizApi.show(id));
-  }, []);
+    setIsLoading(false);
+  };
 
-  return (
+  useEffect(updateQuestion, []);
+
+  return isLoading ? (
+    <CenteredPageloader />
+  ) : (
     <div>
       <div className="flex m-4 justify-between">
-        <Typography style="h2" className="">
-          {data.data?.name}
-        </Typography>
+        <Typography style="h2" className=""></Typography>
         <Button
           label="Add a New Question"
           className="self-end"
           icon={Plus}
           iconPosition="left"
-          onClick={() => {}}
+          onClick={() => setIsCreateQuestionOpen(true)}
         />
       </div>
-      <div className="w-screen h-screen flex justify-center items-center">
-        <Typography style="h3">You have not created any Questions</Typography>
-      </div>
+      {data.data?.quizzes.questions.length == 0 ? (
+        <div className="w-screen h-screen flex justify-center items-center">
+          <Typography style="h3">You have not created any Questions</Typography>
+        </div>
+      ) : (
+        <ListQuestions questions={data.data?.quizzes.questions} />
+      )}
+      <Create
+        isCreateQuestionOpen={isCreateQuestionOpen}
+        setIsCreateQuestionOpen={setIsCreateQuestionOpen}
+        data={data.data}
+        updateQuestion={updateQuestion}
+      />
     </div>
   );
 }

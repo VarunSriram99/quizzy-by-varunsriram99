@@ -19,7 +19,10 @@ class QuizzesController < ApplicationController
   end
 
   def update
-    if @quiz.update!(quiz_params)
+    if quiz_params[:published]
+      create_slug
+    end
+    if @quiz.update!(quiz_params.except(:published))
       render status: :ok, json: { notice: t("successfully_updated", entity: "Quiz") }
     else
       render status: :unprocessable_entity,
@@ -28,7 +31,7 @@ class QuizzesController < ApplicationController
   end
 
   def show
-    render json: @quiz
+    @questions = @quiz.questions.all
   end
 
   def destroy
@@ -51,5 +54,25 @@ class QuizzesController < ApplicationController
       unless @quiz
         render status: :not_found, json: { error: t("not_found", entity: "Quiz") }
       end
+    end
+
+    def create_slug
+      return unless @quiz[:slug].nil?
+
+      name = @quiz[:name]
+      name_slug = name.parameterize
+      regex_pattern = "slug #{Constants::DB_REGEX_OPERATOR} ?"
+      latest_quiz_slug = Quiz.where(
+        regex_pattern,
+        "#{name_slug}$|#{name_slug}-[0-9]+$"
+      ).order(slug: :desc).first&.slug
+      slug_count = 0
+      if latest_quiz_slug.present?
+        slug_count = latest_quiz_slug.split("-").last.to_i
+        only_one_slug_exists = slug_count == 0
+        slug_count = 1 if only_one_slug_exists
+      end
+      slug_candidate = slug_count.positive? ? "#{name_slug}-#{slug_count + 1}" : name_slug
+      @quiz.update(slug: slug_candidate)
     end
 end
