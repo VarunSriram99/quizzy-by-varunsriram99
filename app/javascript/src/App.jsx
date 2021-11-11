@@ -11,6 +11,7 @@ import PrivateRoute from "components/Common/PrivateRoute";
 import HeaderMain from "components/Header/Header";
 import { getFromLocalStorage } from "components/helpers/storage";
 import Login from "components/Login";
+import PublicLogin from "components/Public";
 
 import CenteredPageloader from "./Components/CenteredPageloader";
 import Main from "./Main";
@@ -35,12 +36,17 @@ const App = () => {
       <HeaderMain isLoggedIn={isLoggedIn} />
       <Switch>
         <Route exact path="/login" component={Login} />
-        <PrivateRoute
-          path="/"
-          redirectRoute="/login"
-          condition={isLoggedIn}
-          component={Main}
-        />
+        <Route exact path="/public/:slug">
+          <PublicLogin />
+        </Route>
+        <Route path="/">
+          <PrivateRoute
+            path="/"
+            redirectRoute="/login"
+            condition={isLoggedIn}
+            component={Main}
+          />
+        </Route>
       </Switch>
     </Router>
   );
