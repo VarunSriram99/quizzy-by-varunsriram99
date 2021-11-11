@@ -3,7 +3,8 @@
 json.quizzes do
   json.extract! @quiz,
     :name,
-    :id
+    :id,
+    :slug
 
   json.questions @questions do |question|
     json.extract! question, :id, :question, :correct_option

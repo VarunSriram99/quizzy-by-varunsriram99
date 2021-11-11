@@ -30,7 +30,9 @@ function EditQuiz() {
   ) : (
     <div>
       <div className="flex m-4 justify-between">
-        <Typography style="h2" className=""></Typography>
+        <Typography style="h2" className="">
+          {data.data.quizzes.name}
+        </Typography>
         <Button
           label="Add a New Question"
           className="self-end"
