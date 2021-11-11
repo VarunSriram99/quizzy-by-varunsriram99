@@ -17,20 +17,22 @@ function EditQuiz() {
   const [isCreateQuestionOpen, setIsCreateQuestionOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const updateQuestion = async () => {
+  const fetchQuestions = async () => {
     setIsLoading(true);
     setData(await quizApi.show(id));
     setIsLoading(false);
   };
 
-  useEffect(updateQuestion, []);
+  useEffect(fetchQuestions, []);
 
   return isLoading ? (
     <CenteredPageloader />
   ) : (
     <div>
       <div className="flex m-4 justify-between">
-        <Typography style="h2" className=""></Typography>
+        <Typography style="h2" className="">
+          {data.data.quizzes.name}
+        </Typography>
         <Button
           label="Add a New Question"
           className="self-end"
@@ -44,13 +46,16 @@ function EditQuiz() {
           <Typography style="h3">You have not created any Questions</Typography>
         </div>
       ) : (
-        <ListQuestions questions={data.data?.quizzes.questions} />
+        <ListQuestions
+          questions={data.data?.quizzes.questions}
+          fetchQuestions={fetchQuestions}
+        />
       )}
       <Create
         isCreateQuestionOpen={isCreateQuestionOpen}
         setIsCreateQuestionOpen={setIsCreateQuestionOpen}
         data={data.data}
-        updateQuestion={updateQuestion}
+        fetchQuestions={fetchQuestions}
       />
     </div>
   );
