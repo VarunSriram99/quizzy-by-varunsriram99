@@ -22,7 +22,7 @@ function UpdateQuiz({
       fetchQuiz();
       Toastr.success("Quiz was successfully updated!");
     } catch {
-      Toastr.error();
+      Toastr.error(Error("Something went wrong."));
     }
     setIsUpdateQuestionOpen(false);
   };

@@ -5,10 +5,10 @@ import { Pane, Typography, Input, Button, Select, Toastr } from "neetoui";
 
 import questionApi from "apis/question";
 
-function Create({
-  isCreateQuestionOpen,
-  setIsCreateQuestionOpen,
-  data,
+function Edit({
+  isUpdateQuestionOpen,
+  setIsUpdateQuestionOpen,
+  currentQuestion,
   fetchQuestions,
 }) {
   const [questionTitle, setQuestionTitle] = useState("");
@@ -61,22 +61,17 @@ function Create({
       Toastr.error(Error("Select a valid Correct option"));
       return false;
     }
-    try {
-      questionApi
-        .create({
-          question_and_option: {
-            question: question,
-            options: newArray.slice(0, optionNumber.length),
-            correct_option: correctAnswer,
-            quiz_id: data.quizzes.id,
-          },
-        })
-        .then(fetchQuestions);
-      Toastr.success("Question added successfully!");
-    } catch {
-      Toastr.error("");
-    }
-    setIsCreateQuestionOpen(false);
+    questionApi
+      .update(currentQuestion.id, {
+        question_and_option: {
+          question: question,
+          options: newArray.slice(0, optionNumber.length),
+          correct_option: correctAnswer,
+        },
+      })
+      .then(fetchQuestions);
+    Toastr.success("Question updated successfully!");
+    setIsUpdateQuestionOpen(false);
     return true;
   };
 
@@ -88,12 +83,24 @@ function Create({
     setCorrectAnswerOptions([...optionArray]);
   }, [optionNumber]);
 
+  useEffect(() => {
+    setQuestionTitle(currentQuestion.question);
+    setOptionNumber(new Array(currentQuestion.options?.length).fill(1));
+    setOptionValues(
+      Array.from({ length: currentQuestion.options?.length }, (_, i) =>
+        currentQuestion.options[i]?.option
+          ? currentQuestion.options[i]?.option
+          : ""
+      )
+    );
+  }, [currentQuestion]);
+
   return (
     <div>
       <Pane
-        isOpen={isCreateQuestionOpen}
+        isOpen={isUpdateQuestionOpen}
         onClose={() => {
-          setIsCreateQuestionOpen(false);
+          setIsUpdateQuestionOpen(false);
         }}
       >
         <Pane.Header>
@@ -186,7 +193,7 @@ function Create({
             label="Cancel"
             style="text"
             onClick={() => {
-              setIsCreateQuestionOpen(false);
+              setIsUpdateQuestionOpen(false);
             }}
             size="large"
           />
@@ -196,4 +203,4 @@ function Create({
   );
 }
 
-export default Create;
+export default Edit;
