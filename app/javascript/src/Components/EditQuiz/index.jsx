@@ -56,7 +56,13 @@ function EditQuiz() {
       {data.data.quizzes.slug && (
         <div className="flex items-center mx-4">
           <Typography style="h5">Public link:&nbsp;</Typography>
-          <Typography style="body2">{`${window.location.origin}/public/${data.data.quizzes.slug}`}</Typography>
+          <Typography className="underline" style="body2">
+            <a
+              href={`${window.location.origin}/public/${data.data.quizzes.slug}`}
+              target="_blank"
+              rel="noreferrer"
+            >{`${window.location.origin}/public/${data.data.quizzes.slug}`}</a>
+          </Typography>
         </div>
       )}
       {data.data?.quizzes.questions.length == 0 ? (

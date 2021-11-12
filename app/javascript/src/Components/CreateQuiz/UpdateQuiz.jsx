@@ -8,14 +8,9 @@ import * as yup from "yup";
 
 import quizApi from "apis/quiz";
 
-import { formikInitialValues, formikValidationSchema } from "./constants";
+import { formikValidationSchema } from "./constants";
 
-function UpdateQuiz({
-  isUpdateQuestionOpen,
-  setIsUpdateQuestionOpen,
-  fetchQuiz,
-  id,
-}) {
+function UpdateQuiz({ isUpdateQuestionOpen, onClose, fetchQuiz, id, name }) {
   const handleFormSubmit = async values => {
     try {
       await quizApi.update(id, { quiz: values });
@@ -24,12 +19,13 @@ function UpdateQuiz({
     } catch {
       Toastr.error(Error("Something went wrong."));
     }
-    setIsUpdateQuestionOpen(false);
+    onClose();
   };
   return (
     <Formik
-      initialValues={formikInitialValues}
+      initialValues={{ name: name }}
       onSubmit={handleFormSubmit}
+      enableReinitialize
       validationSchema={yup.object(formikValidationSchema)}
     >
       {({ submitForm }) => (
@@ -38,7 +34,7 @@ function UpdateQuiz({
             <Modal
               size="sm"
               isOpen={isUpdateQuestionOpen}
-              onClose={() => setIsUpdateQuestionOpen(false)}
+              onClose={() => onClose()}
             >
               <Modal.Header>
                 <Typography style="h2">Update quiz</Typography>
@@ -65,7 +61,7 @@ function UpdateQuiz({
                   size="large"
                   style="text"
                   className="ml-2"
-                  onClick={() => setIsUpdateQuestionOpen(false)}
+                  onClick={() => onClose()}
                 />
               </Modal.Footer>
             </Modal>

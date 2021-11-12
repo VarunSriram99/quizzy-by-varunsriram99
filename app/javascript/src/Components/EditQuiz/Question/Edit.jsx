@@ -16,6 +16,7 @@ function Edit({
   const [optionValues, setOptionValues] = useState(["", "", "", ""]);
   const [correctAnswerOptions, setCorrectAnswerOptions] = useState([]);
   const [correctAnswer, setCorrectAnswer] = useState(-1);
+  const [errors, setErrors] = useState({});
   const addMore = () => {
     setOptionNumber([...optionNumber, 1]);
   };
@@ -44,21 +45,31 @@ function Edit({
   };
 
   const handleSubmit = () => {
+    var updateErrors = {};
     const question = questionTitle.trim();
     if (question.length == 0) {
-      Toastr.error(Error("Question title is required"));
-      return false;
+      updateErrors["question"] = "Question title is required";
     }
     var newArray = [...optionValues];
+    var erronousOptionsArray = [];
     for (var key = 0; key < optionNumber.length; key++) {
       newArray[key] = { option: newArray[key].trim(), option_number: key + 1 };
       if (newArray[key].option.length == 0) {
-        Toastr.error(Error("All options are required"));
-        return false;
+        erronousOptionsArray[key] = `Option ${
+          key + 1
+        } should be filled and valid.`;
       }
     }
+    if (erronousOptionsArray.length > 0) {
+      updateErrors["options"] = erronousOptionsArray;
+    }
+
     if (correctAnswer > optionNumber.length || correctAnswer == -1) {
-      Toastr.error(Error("Select a valid Correct option"));
+      updateErrors["correctAnswer"] = "Please select a valid correct option";
+    }
+
+    if (Object.keys(updateErrors).length != 0) {
+      setErrors(updateErrors);
       return false;
     }
     questionApi
@@ -78,12 +89,14 @@ function Edit({
   useEffect(() => {
     var optionArray = [];
     optionNumber.map((value, key) => {
-      optionArray.push({ label: `Option ${key + 1}`, value: key + 1 });
+      optionValues[key] != "" &&
+        optionArray.push({ label: optionValues[key], value: key + 1 });
     });
     setCorrectAnswerOptions([...optionArray]);
-  }, [optionNumber]);
+  }, [optionNumber, optionValues]);
 
   useEffect(() => {
+    setErrors({});
     setQuestionTitle(currentQuestion.question);
     setOptionNumber(new Array(currentQuestion.options?.length).fill(1));
     setOptionValues(
@@ -104,7 +117,7 @@ function Edit({
         }}
       >
         <Pane.Header>
-          <Typography style="h2">Create Question</Typography>
+          <Typography style="h2">Edit Question</Typography>
         </Pane.Header>
         <Pane.Body>
           <div className="w-full space-y-4">
@@ -113,6 +126,7 @@ function Edit({
               className="w-full"
               placeholder="Enter the question here"
               value={questionTitle}
+              error={errors.question}
               onChange={e => {
                 setQuestionTitle(e.target.value);
               }}
@@ -129,6 +143,7 @@ function Edit({
                       className="w-full"
                       placeholder={`Enter option ${key + 1}`}
                       value={optionValues[key]}
+                      error={errors.options && errors.options[key]}
                       onChange={e => {
                         updateOption(e, key);
                       }}
@@ -145,6 +160,7 @@ function Edit({
                     className="w-full"
                     placeholder={`Enter option ${key + 1}`}
                     value={optionValues[key]}
+                    error={errors.options && errors.options[key]}
                     onChange={e => {
                       updateOption(e, key);
                     }}
@@ -173,8 +189,17 @@ function Edit({
               label="Correct option"
               name="ValueList"
               options={correctAnswerOptions}
+              error={errors["correctAnswer"]}
               placeholder="Select the correct Option"
               required
+              defaultValue={
+                currentQuestion.options && {
+                  label:
+                    currentQuestion.options[currentQuestion.correct_option - 1]
+                      .option,
+                  value: currentQuestion.correct_option,
+                }
+              }
               onChange={e => {
                 setCorrectAnswer(e.value);
               }}
