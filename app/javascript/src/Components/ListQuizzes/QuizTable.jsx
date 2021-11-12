@@ -12,6 +12,7 @@ function QuizTable({ data, fetchQuiz }) {
   const [isUpdateQuestionOpen, setIsUpdateQuestionOpen] = useState(false);
   const [isDeleteQuizOpen, setIsDeleteQuizOpen] = useState(false);
   const [id, setId] = useState(-1);
+  const [name, setName] = useState("");
   const history = useHistory();
 
   const handleRowClick = (event, rowData) => {
@@ -20,14 +21,20 @@ function QuizTable({ data, fetchQuiz }) {
     history.push(`/edit/${rowData.id}`);
   };
 
+  const onClose = () => {
+    setName("");
+    setIsUpdateQuestionOpen(false);
+  };
+
   const handleDelete = (id, event) => {
     setId(id);
     setIsDeleteQuizOpen(true);
     event.stopPropagation();
   };
 
-  const handleEdit = (idValue, event) => {
-    setId(idValue);
+  const handleEdit = (value, event) => {
+    setId(value.value);
+    setName(value.row.original.name);
     setIsUpdateQuestionOpen(true);
     event.stopPropagation();
   };
@@ -50,7 +57,7 @@ function QuizTable({ data, fetchQuiz }) {
                 label="Edit"
                 style="secondary"
                 iconPosition="left"
-                onClick={e => handleEdit(value.value, e)}
+                onClick={e => handleEdit(value, e)}
               />
               <Button
                 icon={Delete}
@@ -116,8 +123,9 @@ function QuizTable({ data, fetchQuiz }) {
       </table>
       <UpdateQuiz
         isUpdateQuestionOpen={isUpdateQuestionOpen}
-        setIsUpdateQuestionOpen={setIsUpdateQuestionOpen}
+        onClose={onClose}
         id={id}
+        name={name}
         fetchQuiz={fetchQuiz}
       />
       <DeleteQuiz

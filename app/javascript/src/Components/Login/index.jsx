@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import Logger from "js-logger";
 import { Toastr } from "neetoui";
@@ -11,16 +11,12 @@ import { setToLocalStorage } from "helpers/storage";
 import LoginForm from "./LoginForm";
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const submitForm = async event => {
-    event.preventDefault();
+  const handleSubmit = async values => {
     try {
-      const response = await authApi.login({ login: { email, password } });
+      const response = await authApi.login({ login: values });
       setToLocalStorage({
         authToken: response.data.authentication_token,
-        email,
+        email: values.email,
         userId: response.data.id,
         userName: `${response.data.first_name} ${response.data.last_name}`,
       });
@@ -35,11 +31,7 @@ function Login() {
 
   return (
     <div className="flex h-screen justify-center w-full">
-      <LoginForm
-        submitForm={submitForm}
-        setEmail={setEmail}
-        setPassword={setPassword}
-      />
+      <LoginForm handleSubmit={handleSubmit} />
     </div>
   );
 }
