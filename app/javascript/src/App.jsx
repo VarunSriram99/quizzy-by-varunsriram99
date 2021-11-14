@@ -14,6 +14,7 @@ import Login from "components/Login";
 import PublicLogin from "components/Public";
 
 import CenteredPageloader from "./Components/CenteredPageloader";
+import Attempt from "./Components/Public/Attempt";
 import Main from "./Main";
 
 const App = () => {
@@ -38,6 +39,9 @@ const App = () => {
         <Route exact path="/login" component={Login} />
         <Route exact path="/public/:slug">
           <PublicLogin />
+        </Route>
+        <Route exact path="/public/:slug/attempts/new">
+          <Attempt />
         </Route>
         <Route path="/">
           <PrivateRoute
