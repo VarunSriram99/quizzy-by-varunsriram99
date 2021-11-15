@@ -7,7 +7,6 @@ class ApplicationController < ActionController::Base
     user_email = request.headers["X-Auth-Email"]
     auth_token = request.headers["X-Auth-Token"].presence
     user = user_email && User.find_by_email(user_email)
-    puts user_email, "authtoken"
 
     if user && auth_token &&
       ActiveSupport::SecurityUtils.secure_compare(
