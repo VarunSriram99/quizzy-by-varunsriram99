@@ -1,7 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
 
-function PublicLogin() {
-  return <div>This is the public page for attempting the quiz.</div>;
+import { useParams } from "react-router-dom";
+
+import authApi from "apis/auth";
+import { resetAuthTokens } from "apis/axios";
+import publicApi from "apis/public";
+import { clearFromLocalStorage } from "components/helpers/storage";
+
+import CenteredPageloader from "../CenteredPageloader";
+
+function SlugVerifier() {
+  const { slug } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
+  const checkQuiz = async () => {
+    try {
+      await publicApi.show(slug);
+      authApi.logout();
+      clearFromLocalStorage();
+      resetAuthTokens();
+      window.location.href = `${window.location.pathname}/attempts/new`;
+    } catch {
+      setIsLoading(false);
+    }
+  };
+  checkQuiz();
+  return (
+    <>
+      {isLoading ? (
+        <CenteredPageloader />
+      ) : (
+        <div className="text-3xl h-screen w-screen flex justify-center items-center">
+          Invalid public Quiz Link
+        </div>
+      )}
+    </>
+  );
 }
 
-export default PublicLogin;
+export default SlugVerifier;

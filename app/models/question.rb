@@ -3,6 +3,7 @@
 class Question < ApplicationRecord
   belongs_to :quiz
   has_many :options, dependent: :destroy
+  has_many :attempted_answers, dependent: :destroy
 
   validates :question, presence: true
   validates_length_of :options, in: 2..4
