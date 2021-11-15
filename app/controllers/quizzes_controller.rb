@@ -3,6 +3,7 @@
 class QuizzesController < ApplicationController
   before_action :authenticate_user_using_x_auth_token
   before_action :load_quiz, only: %i[update show destroy]
+  before_action :create_slug, only: :update, if: -> { quiz_params[:published] }
 
   def index
     @quiz = Quiz.where(user_id: @current_user.id)
@@ -19,9 +20,6 @@ class QuizzesController < ApplicationController
   end
 
   def update
-    if quiz_params[:published]
-      create_slug
-    end
     if @quiz.update!(quiz_params.except(:published))
       render status: :ok, json: { notice: t("successfully_updated", entity: "Quiz") }
     else

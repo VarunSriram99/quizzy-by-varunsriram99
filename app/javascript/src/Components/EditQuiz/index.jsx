@@ -48,7 +48,10 @@ function EditQuiz() {
           />
           <Button
             label={data.data.quizzes.slug ? "Published" : "Publish"}
-            disabled={!!data.data.quizzes.slug}
+            disabled={
+              !!data.data.quizzes.slug ||
+              data.data?.quizzes.questions.length == 0
+            }
             onClick={() => handlePublish(data.data.quizzes.id)}
           />
         </div>

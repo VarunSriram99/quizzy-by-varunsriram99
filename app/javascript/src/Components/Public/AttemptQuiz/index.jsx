@@ -20,7 +20,11 @@ function SignInPage({ slug, setIsLoggedIn, setUserInfo, quizDetails }) {
   };
   const handleFormSubmit = async values => {
     try {
-      const { data } = await userApi.create(values, slug);
+      const { data } = await userApi.create(
+        values,
+        slug,
+        quizDetails.quizzes?.id
+      );
       if (data) {
         setUserInfo(data);
         setIsLoggedIn(true);

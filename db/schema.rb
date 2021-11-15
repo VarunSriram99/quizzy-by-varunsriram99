@@ -34,7 +34,8 @@ ActiveRecord::Schema.define(version: 2021_11_15_093226) do
     t.string "correct_answers_count"
     t.string "incorrect_answers_count"
     t.index ["quiz_id"], name: "index_attempts_on_quiz_id"
-    t.index ["user_id"], name: "index_attempts_on_user_id", unique: true
+    t.index ["user_id", "quiz_id"], name: "index_attempts_on_user_id_and_quiz_id", unique: true
+    t.index ["user_id"], name: "index_attempts_on_user_id"
   end
 
   create_table "options", force: :cascade do |t|

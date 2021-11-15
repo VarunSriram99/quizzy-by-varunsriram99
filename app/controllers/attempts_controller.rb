@@ -12,6 +12,9 @@ class AttemptsController < ApplicationController
       calculate_results
       if @attempt.save
         render status: :ok, json: { notice: t("successfully_submitted") }
+      else
+        errors = @attempt.errors.full_messages.to_sentence
+        render status: :unprocessable_entity, json: { error: errors.full_messages }
       end
     end
   end

@@ -12,7 +12,7 @@ json.quizzes do
       json.options question.options
     end
   else
-    if @user.attempt.submitted
+    if @attempt.submitted
       json.questions @questions do |question|
         json.extract! question, :id, :question, :correct_option
         json.options question.options
