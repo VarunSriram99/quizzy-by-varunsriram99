@@ -1,6 +1,4 @@
 en:
-  successfully_submitted: "Quiz submitted successfully!"
-  slug_exists: "Quiz is valid!"
   successfully_created: "%{entity} was created successfully!"
   successfully_destroyed: "%{entity} was destroyed successfully!"
   successfully_updated: "%{entity} was updated successfully!"

@@ -79,7 +79,7 @@ function QuizTable({ data, fetchQuiz }) {
       data,
     });
   return (
-    <div className="w-full border min-h-screen mt-2 border-black p-4">
+    <div className="w-full border h-screen mt-2 border-black p-4">
       <table {...getTableProps()} className="w-full my-4 p-10">
         <thead>
           {headerGroups.map(headerGroup => (

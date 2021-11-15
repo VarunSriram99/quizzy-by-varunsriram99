@@ -4,7 +4,6 @@ class User < ApplicationRecord
   EMAIL_VALIDATION_REGEX = /\A([\w+\-].?)+@[a-z\d\-]+(\.[a-z]+)*\.[a-z]+\z/i.freeze
 
   has_many :quizzes
-  has_one :attempt, dependent: :destroy
 
   enum role: { standard: 0, administrator: 1 }, _default: "standard"
 
