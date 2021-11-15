@@ -25,13 +25,12 @@ function Attempt() {
     checkQuiz();
     if (userInfo.attempt?.submitted) {
       setIsSubmitted(true);
-      checkQuiz();
     }
   }, [userInfo]);
   const checkQuiz = async () => {
     try {
       var data;
-      if (userInfo.attempt?.submitted) {
+      if (userInfo.attempt?.submitted || isSubmitted) {
         data = await publicApi.show(slug, userInfo.email);
       } else {
         data = await publicApi.show(slug);
@@ -52,7 +51,7 @@ function Attempt() {
     } catch (error) {
       Logger.log(error);
       setIsLoading(false);
-      //window.location.href=window.location.pathname.split("/attempts")[0]
+      window.location.href = window.location.pathname.split("/attempts")[0];
     }
   };
 
@@ -62,12 +61,17 @@ function Attempt() {
         <CenteredPageloader />
       ) : isLoggedIn ? (
         isSubmitted ? (
-          <ResultsLanding quizDetails={quizDetails} />
+          <ResultsLanding
+            quizDetails={quizDetails}
+            userInfo={userInfo}
+            checkQuiz={checkQuiz}
+          />
         ) : (
           <Quiz
             quizDetails={quizDetails}
             userInfo={userInfo}
             setIsSubmitted={setIsSubmitted}
+            checkQuiz={checkQuiz}
           />
         )
       ) : (

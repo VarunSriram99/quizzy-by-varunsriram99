@@ -9,6 +9,7 @@ class AttemptsController < ApplicationController
     else
       @attempt.attempted_answers = AttemptedAnswer.create(attempt_params[:answers])
       @attempt.submitted = true
+      calculate_results
       if @attempt.save
         render status: :ok, json: { notice: t("successfully_submitted") }
       end
@@ -19,5 +20,20 @@ class AttemptsController < ApplicationController
 
     def attempt_params
       params.require(:submitted_answers).permit(:attempt_id, answers: [:question_id, :answer])
+    end
+
+    def calculate_results
+      correct_answers = 0
+      incorrect_answers = 0
+      attempt_params[:answers].each do |answer|
+        correct_answer = Question.find_by(id: answer[:question_id]).correct_option
+        if correct_answer.to_i == answer[:answer].to_i
+          correct_answers = correct_answers + 1
+        else
+          incorrect_answers = incorrect_answers + 1
+        end
+      end
+      @attempt.correct_answers_count = correct_answers
+      @attempt.incorrect_answers_count = incorrect_answers
     end
 end

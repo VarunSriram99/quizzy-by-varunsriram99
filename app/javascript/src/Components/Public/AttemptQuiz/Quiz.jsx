@@ -6,7 +6,7 @@ import { Radio } from "neetoui";
 
 import submitApi from "apis/Public/submit";
 
-function Quiz({ quizDetails, userInfo, setIsSubmitted }) {
+function Quiz({ quizDetails, userInfo, setIsSubmitted, checkQuiz }) {
   const [isSubmittable, setIsSubmittable] = useState(false);
   var formikInitialValues = {};
   const handleFormSubmit = values => {
@@ -22,6 +22,7 @@ function Quiz({ quizDetails, userInfo, setIsSubmitted }) {
           answers: submittedData,
         },
       });
+      checkQuiz();
       setIsSubmitted(true);
     } catch {
       Toastr.error(Error("Something went wrong"));
