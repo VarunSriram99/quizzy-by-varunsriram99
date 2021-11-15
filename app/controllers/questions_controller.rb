@@ -6,7 +6,6 @@ class QuestionsController < ApplicationController
 
   def create
     @question = Question.new(question_params.except(:options))
-    @question.options = Option.create(question_params[:options])
     if @question.save
       render status: :ok, json: { notice: t("successfully_created", entity: "Question") }
     else
@@ -28,7 +27,14 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
+    quiz_id = @question.quiz_id
     if @question.destroy
+      @quiz = Quiz.find_by(id: quiz_id)
+      if @quiz.questions.count == 0
+        unless @quiz.update!(slug: nil)
+          render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages }
+        end
+      end
       render status: :ok, json: { notice: t("successfully_destroyed", entity: "Question") }
     else
       errors = @question.errors.full_messages.to_sentence
@@ -48,6 +54,6 @@ class QuestionsController < ApplicationController
     def question_params
       params.require(:question_and_option).permit(
         :question, :correct_option, :quiz_id,
-        options: [:option, :option_number])
+        options_parameters: [:option, :option_number])
     end
 end
