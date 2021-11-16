@@ -4,6 +4,6 @@ FactoryBot.define do
   factory :attempted_answer do
     answer { Faker::Name.name }
     association :question
-    association :attemptr
+    association :attempt
   end
 end
