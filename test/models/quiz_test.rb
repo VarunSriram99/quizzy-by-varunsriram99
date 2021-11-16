@@ -4,8 +4,7 @@ require "test_helper"
 
 class QuizTest < ActiveSupport::TestCase
   def setup
-    @user = create(:user)
-    @quiz = build(:quiz, user_id: @user.id)
+    @quiz = build(:quiz)
   end
 
   def test_quiz_should_be_valid
@@ -19,13 +18,14 @@ class QuizTest < ActiveSupport::TestCase
   end
 
   def test_quiz_should_should_have_a_valid_user
-    @quiz.user_id = nil
-    assert_not @quiz.valid?
-    assert_equal ["User must exist"], @quiz.errors.full_messages
+    quiz2 = @quiz.dup
+    quiz2.user_id = nil
+    assert_not quiz2.valid?
+    assert_equal ["User must exist"], quiz2.errors.full_messages
   end
 
   def test_slug_should_be_unique
-    quiz2 = build(:quiz, user_id: @user.id)
+    quiz2 = build(:quiz)
     @quiz.slug = "sample_quiz"
     @quiz.save
     quiz2.slug = "sample_quiz"

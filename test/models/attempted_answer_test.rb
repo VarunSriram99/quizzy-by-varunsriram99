@@ -4,12 +4,10 @@ require "test_helper"
 
 class AttemptedAnswerTest < ActiveSupport::TestCase
   def setup
-    @user = create(:user)
-    @quiz = create(:quiz, user_id: @user.id)
-    @attempt = create(:attempt, user_id: @user.id, quiz_id: @quiz.id)
+    @attempt = create(:attempt)
     @option1 = build(:option)
     @option2 = build(:option)
-    @question = create(:question, quiz_id: @quiz.id, options: [@option1, @option2])
+    @question = create(:question, options: [@option1, @option2])
     @attempted_answer = build(:attempted_answer, attempt_id: @attempt.id, question_id: @question.id)
   end
 

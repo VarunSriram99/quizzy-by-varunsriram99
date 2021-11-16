@@ -4,9 +4,7 @@ require "test_helper"
 
 class AttemptTest < ActiveSupport::TestCase
   def setup
-    @user = create(:user)
-    @quiz = create(:quiz, user_id: @user.id)
-    @attempt = build(:attempt, user_id: @user.id, quiz_id: @quiz.id)
+    @attempt = build(:attempt)
   end
 
   def test_valid_attempt_should_be_saved

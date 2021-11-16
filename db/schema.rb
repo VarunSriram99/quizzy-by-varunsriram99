@@ -49,7 +49,7 @@ ActiveRecord::Schema.define(version: 2021_11_15_093226) do
 
   create_table "questions", force: :cascade do |t|
     t.string "question", null: false
-    t.integer "correct_option"
+    t.integer "correct_option", null: false
     t.integer "quiz_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false

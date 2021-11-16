@@ -4,11 +4,9 @@ require "test_helper"
 
 class QuestionTest < ActiveSupport::TestCase
   def setup
-    @user = create(:user)
-    @quiz = create(:quiz, user_id: @user.id)
     @option1 = build(:option)
     @option2 = build(:option)
-    @question = build(:question, quiz_id: @quiz.id, options: [@option1, @option2])
+    @question = build(:question, options: [@option1, @option2])
   end
 
   def test_valid_question_should_be_accepted
