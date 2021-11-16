@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 json.attempts @attempts do |attempt|
   json.quiz_name Quiz.find_by(id: attempt.quiz_id).name
   @user = User.find_by(id: attempt.user_id)
