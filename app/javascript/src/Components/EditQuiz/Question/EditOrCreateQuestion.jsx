@@ -173,7 +173,7 @@ function EditOrCreateQuestion({
           {optionNumbers.map((value, key) => {
             if (key < 2) {
               return (
-                <div key={key} className="flex w-full items-end space-x-2">
+                <div className="flex w-full items-end space-x-2">
                   <Input
                     label={`Option ${key + 1}`}
                     className="w-full"
@@ -188,7 +188,7 @@ function EditOrCreateQuestion({
             }
 
             return (
-              <div key={key} className="flex w-full items-end space-x-2">
+              <div className="flex w-full items-end space-x-2">
                 <Input
                   label={`Option ${key + 1}`}
                   className="w-full"
