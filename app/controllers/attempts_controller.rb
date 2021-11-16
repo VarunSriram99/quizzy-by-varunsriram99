@@ -2,6 +2,11 @@
 
 class AttemptsController < ApplicationController
   skip_before_action :verify_authenticity_token
+
+  def index
+    @attempts = Attempt.where(submitted: true)
+  end
+
   def create
     @attempt = Attempt.find_by(id: attempt_params[:attempt_id])
     unless @attempt.present?
