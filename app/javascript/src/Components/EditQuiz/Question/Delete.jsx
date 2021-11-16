@@ -1,7 +1,6 @@
 import React from "react";
 
-import { Warning } from "neetoicons";
-import { Modal, Typography, Button, Toastr } from "neetoui";
+import { Alert, Toastr } from "neetoui";
 
 import questionApi from "apis/question";
 
@@ -24,36 +23,15 @@ function Delete({
   };
   return (
     <div>
-      <Modal
-        size="sm"
-        isOpen={isDeleteQuestionOpen}
+      <Alert
+        message="Are you sure you want to delete the question?"
         onClose={() => setIsDeleteQuestionOpen(false)}
-      >
-        <Modal.Header>
-          <Typography style="h2" className="flex items-center">
-            <Warning />
-            &nbsp; Delete Question
-          </Typography>
-        </Modal.Header>
-        <Modal.Body>Are you sure you want to delete the question?</Modal.Body>
-        <Modal.Footer>
-          <Button
-            type="submit"
-            label="Submit"
-            size="large"
-            style="danger"
-            onClick={handleDelete}
-            className="ml-2"
-          />
-          <Button
-            label="Close"
-            size="large"
-            style="text"
-            className="ml-2"
-            onClick={() => setIsDeleteQuestionOpen(false)}
-          />
-        </Modal.Footer>
-      </Modal>
+        isOpen={isDeleteQuestionOpen}
+        onSubmit={() => handleDelete()}
+        title="Delete Quiz"
+        size="sm"
+        closeButton={false}
+      />
     </div>
   );
 }

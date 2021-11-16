@@ -7,7 +7,13 @@ import * as yup from "yup";
 
 import userApi from "apis/Public/user";
 
-function SignInPage({ slug, setIsLoggedIn, setUserInfo, quizDetails }) {
+function SignInPage({
+  slug,
+  setIsLoggedIn,
+  setUserInfo,
+  quizDetails,
+  setIsLoading,
+}) {
   const formikInitialValues = { first_name: "", last_name: "", email: "" };
   const formikValidationSchema = {
     first_name: yup.string().trim().required("First Name is required"),
@@ -20,6 +26,7 @@ function SignInPage({ slug, setIsLoggedIn, setUserInfo, quizDetails }) {
   };
   const handleFormSubmit = async values => {
     try {
+      setIsLoading(true);
       const { data } = await userApi.create(
         values,
         slug,
@@ -29,6 +36,7 @@ function SignInPage({ slug, setIsLoggedIn, setUserInfo, quizDetails }) {
         setUserInfo(data);
         setIsLoggedIn(true);
       }
+      setIsLoading(false);
     } catch (error) {
       Toastr.error(Error("Something went wrong! :("));
     }

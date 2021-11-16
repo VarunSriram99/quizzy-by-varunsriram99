@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { Check, Left } from "neetoicons";
-import { Typography } from "neetoui";
+import { Typography, Toastr } from "neetoui";
 
 import resultApi from "apis/Public/result";
 
@@ -15,6 +15,8 @@ function ResultsLanding({ quizDetails, userInfo, checkQuiz }) {
       try {
         data = await resultApi.show(userInfo.attempt?.id);
         await checkQuiz();
+      } catch {
+        Toastr.error(Error("Something went wrong."));
       } finally {
         setAnswers(data.data.results.attempted_answers);
         setCorrectIncorrectAnswers([
