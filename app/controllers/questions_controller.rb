@@ -5,7 +5,7 @@ class QuestionsController < ApplicationController
   before_action :load_question, only: %i[update destroy]
 
   def create
-    @question = Question.new(question_params.except(:options))
+    @question = Question.new(question_params)
     if @question.save
       render status: :ok, json: { notice: t("successfully_created", entity: "Question") }
     else
@@ -15,10 +15,8 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question.assign_attributes(question_params.except(:options))
     @question.options.destroy_all
-    @question.options = Option.create(question_params[:options])
-    if @question.save!
+    if @question.update!(question_params)
       render status: :ok, json: { notice: t("successfully_created", entity: "Question") }
     else
       errors = @question.errors.full_messages.to_sentence
@@ -52,8 +50,8 @@ class QuestionsController < ApplicationController
     end
 
     def question_params
-      params.require(:question_and_option).permit(
+      params.require(:question).permit(
         :question, :correct_option, :quiz_id,
-        options_parameters: [:option, :option_number])
+        options_attributes: [:option, :option_number])
     end
 end

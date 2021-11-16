@@ -4,11 +4,9 @@ require "test_helper"
 
 class OptionTest < ActiveSupport::TestCase
   def setup
-    @user = create(:user)
-    @quiz = create(:quiz, user_id: @user.id)
     @option = build(:option)
     @option2 = build(:option)
-    @question = create(:question, quiz_id: @quiz.id, options: [@option, @option2])
+    @questions = create(:question, options: [@option, @option2])
   end
 
   def test_valid_options_should_be_accepted

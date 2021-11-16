@@ -4,7 +4,7 @@ class CreateQuestions < ActiveRecord::Migration[6.1]
   def change
     create_table :questions do |t|
       t.string :question, null: false
-      t.integer :correct_option
+      t.integer :correct_option, null: false
       t.references :quiz, null: false, foreign_key: true
 
       t.timestamps

@@ -2,6 +2,7 @@
 
 FactoryBot.define do
   factory :attempt do
-
+    association :user
+    association :quiz
   end
 end
