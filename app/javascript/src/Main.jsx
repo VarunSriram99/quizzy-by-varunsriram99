@@ -4,6 +4,7 @@ import { Route } from "react-router";
 
 import EditQuiz from "./Components/EditQuiz";
 import ListQuizzes from "./Components/ListQuizzes";
+import ResultsTable from "./Components/Results";
 
 function Main() {
   return (
@@ -13,6 +14,9 @@ function Main() {
       </Route>
       <Route exact path="/edit/:id">
         <EditQuiz />
+      </Route>
+      <Route exact path="/results">
+        <ResultsTable />
       </Route>
     </div>
   );
