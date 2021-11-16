@@ -65,6 +65,7 @@ function Attempt() {
             quizDetails={quizDetails}
             userInfo={userInfo}
             checkQuiz={checkQuiz}
+            setIsLoading={setIsLoading}
           />
         ) : (
           <Quiz
@@ -72,6 +73,7 @@ function Attempt() {
             userInfo={userInfo}
             setIsSubmitted={setIsSubmitted}
             checkQuiz={checkQuiz}
+            setIsLoading={setIsLoading}
           />
         )
       ) : (
@@ -81,6 +83,7 @@ function Attempt() {
           setUserInfo={setUserInfo}
           quizDetails={quizDetails}
           checkQuiz={checkQuiz}
+          setIsLoading={setIsLoading}
         />
       )}
     </>

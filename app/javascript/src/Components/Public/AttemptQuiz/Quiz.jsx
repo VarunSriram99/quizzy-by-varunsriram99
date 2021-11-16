@@ -9,20 +9,20 @@ import submitApi from "apis/Public/submit";
 function Quiz({ quizDetails, userInfo, setIsSubmitted, checkQuiz }) {
   const [isSubmittable, setIsSubmittable] = useState(false);
   var formikInitialValues = {};
-  const handleFormSubmit = values => {
+  const handleFormSubmit = async values => {
     const keys = Object.keys(values);
     var submittedData = [];
     for (var key of keys) {
       submittedData.push({ question_id: key, answer: values[key] });
     }
     try {
-      submitApi.create({
+      await submitApi.create({
         submitted_answers: {
           attempt_id: userInfo.attempt.id,
           answers: submittedData,
         },
       });
-      checkQuiz();
+      await checkQuiz();
       setIsSubmitted(true);
     } catch {
       Toastr.error(Error("Something went wrong"));
