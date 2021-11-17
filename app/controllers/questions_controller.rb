@@ -45,7 +45,7 @@ class QuestionsController < ApplicationController
 
   private
 
-    def lauthorizeoad_question
+    def load_question
       @question = Question.find_by(id: params[:id])
       unless @question
         render status: :not_found, json: { error: t("not_found", entity: "Question") }
