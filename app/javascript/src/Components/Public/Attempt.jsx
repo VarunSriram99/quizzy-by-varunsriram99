@@ -41,7 +41,7 @@ function Attempt() {
         setIsSubmitted(true);
       }
 
-      if (localStorage.getItem("authEmail") != null) {
+      if (localStorage.getItem("authEmail") != null && !userInfo.email) {
         authApi.logout();
         clearFromLocalStorage();
         resetAuthTokens();

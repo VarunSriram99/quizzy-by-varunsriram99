@@ -7,8 +7,7 @@ Rails.application.routes.draw do
   resources :questions, only: %i[create update destroy], param: :id
   resources :public_attempts, only: :show, param: :slug
   resources :users, only: :create
-  resources :attempts, only: %i[create index]
-  resources :results, only: :show, param: :id
+  resources :attempts, only: %i[create show index], param: :id
   resources :download_result, only: :index
 
   root "home#index"

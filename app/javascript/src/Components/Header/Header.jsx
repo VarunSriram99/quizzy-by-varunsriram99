@@ -22,7 +22,10 @@ function HeaderMain({ isLoggedIn }) {
             }
           />
         }
-        actionBlock={isLoggedIn && <ActionBlock />}
+        actionBlock={
+          isLoggedIn &&
+          localStorage.getItem("role") == "administrator" && <ActionBlock />
+        }
         className="mr-2 border-b-2 border-black"
       />
     </div>

@@ -19,6 +19,7 @@ function Login() {
         email: values.email,
         userId: response.data.id,
         userName: `${response.data.first_name} ${response.data.last_name}`,
+        role: response.data.role,
       });
       setAuthHeaders();
       Toastr.success("Successfully logged in");

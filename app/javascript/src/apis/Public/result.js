@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const show = id => axios.get(`/results/${id}`);
+const show = id => axios.get(`/attempts/${id}`);
 
 const resultApi = { show };
 

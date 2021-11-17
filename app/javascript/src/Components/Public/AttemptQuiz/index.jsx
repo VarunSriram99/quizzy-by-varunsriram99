@@ -5,7 +5,9 @@ import { Button, Toastr, Typography } from "neetoui";
 import { Input } from "neetoui/formik";
 import * as yup from "yup";
 
+import { setAuthHeaders } from "apis/axios";
 import userApi from "apis/Public/user";
+import { setToLocalStorage } from "helpers/storage";
 
 function SignInPage({
   slug,
@@ -34,6 +36,15 @@ function SignInPage({
       );
       if (data) {
         setUserInfo(data);
+        setToLocalStorage({
+          authToken: data.authentication_token,
+          email: data.email,
+          userId: data.id,
+          userName: `${data.first_name} ${data.last_name}`,
+          role: data.role,
+        });
+        setAuthHeaders();
+        Toastr.success("Successfully logged in");
         setIsLoggedIn(true);
       }
       setIsLoading(false);

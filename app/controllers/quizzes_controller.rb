@@ -7,10 +7,12 @@ class QuizzesController < ApplicationController
 
   def index
     @quiz = Quiz.where(user_id: @current_user.id)
+    authorize @quiz
   end
 
   def create
     @quiz = Quiz.new(quiz_params.merge(user_id: @current_user.id))
+    authorize @quiz
     if @quiz.save
       render status: :ok, json: { notice: t("successfully_created", entity: "Quiz") }
     else
@@ -20,6 +22,7 @@ class QuizzesController < ApplicationController
   end
 
   def update
+    authorize @quiz
     if @quiz.update!(quiz_params.except(:published))
       render status: :ok, json: { notice: t("successfully_updated", entity: "Quiz") }
     else
@@ -29,10 +32,12 @@ class QuizzesController < ApplicationController
   end
 
   def show
+    authorize @quiz
     @questions = @quiz.questions.all
   end
 
   def destroy
+    authorize @quiz
     if @quiz.destroy
       render status: :ok, json: { notice: t("successfully_destroyed", entity: "Quiz") }
     else
