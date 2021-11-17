@@ -7,7 +7,7 @@ function TableRender({ tableData }) {
     () => [
       {
         Header: "Quiz Name",
-        accessor: "quiz_name", // accessor is the "key" in the data
+        accessor: "quiz_name",
       },
       {
         Header: "User Name",

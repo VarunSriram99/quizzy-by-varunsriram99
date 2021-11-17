@@ -23,7 +23,7 @@ function ActionBlock() {
   };
   return (
     <div className="mr-4 ">
-      <Button style="text" size="large" label="Reports" />
+      <Button style="text" size="large" label="Reports" href="/results" />
       <Button
         style="text"
         size="large"
