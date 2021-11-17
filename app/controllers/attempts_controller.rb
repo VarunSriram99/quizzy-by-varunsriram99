@@ -5,6 +5,7 @@ class AttemptsController < ApplicationController
 
   def index
     @attempts = Attempt.where(submitted: true)
+    authorize @attempts
   end
 
   def show
