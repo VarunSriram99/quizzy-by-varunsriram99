@@ -1,5 +1,6 @@
 import React from "react";
 
+import Logger from "js-logger";
 import { Alert, Toastr } from "neetoui";
 
 import questionApi from "apis/question";
@@ -13,10 +14,11 @@ function Delete({
   const handleDelete = async () => {
     try {
       await questionApi.destroy(id);
-      fetchQuestions();
+      await fetchQuestions();
       Toastr.success("Successfully deleted question");
     } catch (error) {
-      Toastr.error("");
+      Logger.log(error);
+      Toastr.error(Error("Something went wrong"));
     } finally {
       setIsDeleteQuestionOpen(false);
     }
