@@ -109,7 +109,7 @@ function EditOrCreateQuestion({
       return true;
     } catch (error) {
       Logger.error(error);
-      Toastr.Error(Error("Something went wrong!"));
+      Toastr.error(Error("Something went wrong!"));
       return false;
     }
   };
