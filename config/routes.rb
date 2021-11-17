@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   resources :users, only: :create
   resources :attempts, only: %i[create index]
   resources :results, only: :show, param: :id
+  resources :download_result, only: :index
 
   root "home#index"
   get "*path", to: "home#index", via: :all

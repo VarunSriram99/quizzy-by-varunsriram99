@@ -64,3 +64,9 @@ gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # React for rails
 gem "react-rails"
+
+# Sideqik for background processing
+gem "sidekiq"
+
+# Spreadsheet to generate Xls file
+gem "spreadsheet"
