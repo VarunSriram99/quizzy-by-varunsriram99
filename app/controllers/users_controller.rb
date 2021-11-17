@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 class UsersController < ApplicationController
-  skip_before_action :verify_authenticity_token
   def create
-    @user = User.find_by(email: user_params[:email])
+    @user = User.find_by(email: user_params[:email].downcase)
     if @user
       @attempt = @user.attempts.find_by(quiz_id: params[:quiz_id])
       unless @attempt

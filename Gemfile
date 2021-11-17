@@ -70,3 +70,6 @@ gem "sidekiq"
 
 # Spreadsheet to generate Xls file
 gem "spreadsheet"
+
+# Authorization using pundit
+gem "pundit"

@@ -46,7 +46,9 @@ const App = () => {
           <PrivateRoute
             path="/"
             redirectRoute="/login"
-            condition={isLoggedIn}
+            condition={
+              isLoggedIn && localStorage.getItem("role") == "administrator"
+            }
             component={Main}
           />
         </Route>

@@ -1,10 +1,19 @@
 # frozen_string_literal: true
 
 class AttemptsController < ApplicationController
-  skip_before_action :verify_authenticity_token
+  before_action :authenticate_user_using_x_auth_token
 
   def index
     @attempts = Attempt.where(submitted: true)
+  end
+
+  def show
+    @attempt = Attempt.find_by(id: params[:id])
+    if @attempt.present?
+      render
+    else
+      render status: :not_found, json: { error: t("not_found", entity: "Attempt") }
+    end
   end
 
   def create

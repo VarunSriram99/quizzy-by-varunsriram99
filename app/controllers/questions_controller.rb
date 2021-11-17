@@ -6,6 +6,7 @@ class QuestionsController < ApplicationController
 
   def create
     @question = Question.new(question_params)
+    authenticate @question
     if @question.save
       render status: :ok, json: { notice: t("successfully_created", entity: "Question") }
     else
@@ -15,6 +16,7 @@ class QuestionsController < ApplicationController
   end
 
   def update
+    authenticate @question
     @question.options.destroy_all
     if @question.update!(question_params)
       render status: :ok, json: { notice: t("successfully_created", entity: "Question") }
@@ -25,6 +27,7 @@ class QuestionsController < ApplicationController
   end
 
   def destroy
+    authenticate @question
     quiz_id = @question.quiz_id
     if @question.destroy
       @quiz = Quiz.find_by(id: quiz_id)

@@ -1,4 +1,6 @@
 en:
+  authorization:
+      denied: "Access denied. You are not authorized to perform this action."
   successfully_submitted: "Quiz submitted successfully!"
   slug_exists: "Quiz is valid!"
   successfully_created: "%{entity} was created successfully!"
