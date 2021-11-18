@@ -23,7 +23,7 @@ function UpdateQuiz({ isUpdateQuestionOpen, onClose, fetchQuiz, id, name }) {
   };
   return (
     <Formik
-      initialValues={{ name: name }}
+      initialValues={{ name }}
       onSubmit={handleFormSubmit}
       enableReinitialize
       validationSchema={yup.object(formikValidationSchema)}
@@ -31,11 +31,7 @@ function UpdateQuiz({ isUpdateQuestionOpen, onClose, fetchQuiz, id, name }) {
       {({ submitForm }) => (
         <Form>
           <div>
-            <Modal
-              size="sm"
-              isOpen={isUpdateQuestionOpen}
-              onClose={() => onClose()}
-            >
+            <Modal size="sm" isOpen={isUpdateQuestionOpen} onClose={onClose}>
               <Modal.Header>
                 <Typography style="h2">Update quiz</Typography>
               </Modal.Header>

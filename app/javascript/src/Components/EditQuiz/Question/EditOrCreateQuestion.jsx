@@ -45,20 +45,20 @@ function EditOrCreateQuestion({
       updateErrors["question"] = "Question title is required";
     }
     const newOptionsArray = [...optionValues];
-    const erronousOptionsArray = [];
+    const erroneousOptionsArray = [];
     for (const index in optionNumbers) {
       newOptionsArray[index] = {
         option: newOptionsArray[index].trim(),
         option_number: parseInt(index) + 1,
       };
       if (newOptionsArray[index].option.length == 0) {
-        erronousOptionsArray[index] = `Option ${
+        erroneousOptionsArray[index] = `Option ${
           parseInt(index) + 1
         } should be filled and valid.`;
       }
     }
-    if (erronousOptionsArray.length > 0) {
-      updateErrors["options"] = erronousOptionsArray;
+    if (erroneousOptionsArray.length > 0) {
+      updateErrors["options"] = erroneousOptionsArray;
     }
 
     if (correctAnswer > optionNumbers.length || correctAnswer < 0) {
@@ -117,7 +117,7 @@ function EditOrCreateQuestion({
   useEffect(() => {
     var optionArray = [];
     optionNumbers.map((value, index) => {
-      optionValues[index] != "" &&
+      optionValues[index] &&
         optionArray.push({ label: optionValues[index], value: index + 1 });
     });
     setCorrectAnswerOptions([...optionArray]);
@@ -179,7 +179,7 @@ function EditOrCreateQuestion({
                     className="w-full"
                     placeholder={`Enter option ${key + 1}`}
                     value={optionValues[key]}
-                    error={errors.options && errors.options[key]}
+                    error={errors.options?.[key]}
                     onChange={e => updateOption(e, key)}
                     required
                   />
