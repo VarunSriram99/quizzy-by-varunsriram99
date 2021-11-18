@@ -6,7 +6,7 @@ json.quizzes do
     :id,
     :slug
 
-  if @user.nil?
+  if @user.nil? || @attempt.nil?
     json.questions @questions do |question|
       json.extract! question, :id, :question
       json.options question.options

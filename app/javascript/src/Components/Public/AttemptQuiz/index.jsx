@@ -6,7 +6,7 @@ import { Input } from "neetoui/formik";
 import * as yup from "yup";
 
 import { setAuthHeaders } from "apis/axios";
-import userApi from "apis/Public/user";
+import publicApi from "apis/public";
 import { setToLocalStorage } from "helpers/storage";
 
 function SignInPage({
@@ -29,7 +29,7 @@ function SignInPage({
   const handleFormSubmit = async values => {
     try {
       setIsLoading(true);
-      const { data } = await userApi.create(
+      const { data } = await publicApi.createUser(
         values,
         slug,
         quizDetails.quizzes?.id

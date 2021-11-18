@@ -72,7 +72,7 @@ class QuizzesController < ApplicationController
       slug_count = 0
       if latest_quiz_slug.present?
         slug_count = latest_quiz_slug.split("-").last.to_i
-        puts "slug_count", slug_count
+
         only_one_slug_exists = slug_count == 0
         slug_count = 1 if only_one_slug_exists
       end

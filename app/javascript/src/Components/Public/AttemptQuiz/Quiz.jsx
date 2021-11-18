@@ -4,39 +4,38 @@ import { Formik, Form } from "formik";
 import { Typography, Button, Toastr } from "neetoui";
 import { Radio } from "neetoui";
 
-import submitApi from "apis/Public/submit";
+import publicApi from "apis/public";
 
 function Quiz({ quizDetails, userInfo, setIsSubmitted, checkQuiz }) {
   const [isSubmittable, setIsSubmittable] = useState(false);
-  var formikInitialValues = {};
+  let formikInitialValues = {};
   const handleFormSubmit = async values => {
-    const keys = Object.keys(values);
-    var submittedData = [];
-    for (var key of keys) {
+    const submittedData = [];
+    for (const key in values) {
       submittedData.push({ question_id: key, answer: values[key] });
     }
     try {
-      await submitApi.create({
+      await publicApi.submitQuiz(userInfo.attempt.id, {
         submitted_answers: {
-          attempt_id: userInfo.attempt.id,
-          answers: submittedData,
+          attempted_answers_attributes: submittedData,
         },
       });
       await checkQuiz();
       setIsSubmitted(true);
+      Toastr.success("Successfully submitted quiz!");
     } catch {
       Toastr.error(Error("Something went wrong"));
     }
   };
   const enableSubmit = values => {
-    var selections = Object.values(values);
-    for (var selection of selections) {
+    let selections = Object.values(values);
+    for (let selection of selections) {
       if (selection.trim() == "") return;
     }
     setIsSubmittable(true);
   };
   useEffect(() => {
-    quizDetails.quizzes?.questions.map(question => {
+    quizDetails.quizzes?.questions?.map(question => {
       formikInitialValues[question.id] = "";
     });
   }, []);
@@ -49,7 +48,7 @@ function Quiz({ quizDetails, userInfo, setIsSubmitted, checkQuiz }) {
             <Typography style="h4">
               Please answer all the questions below:
             </Typography>
-            {quizDetails.quizzes?.questions.map((question, index) => (
+            {quizDetails.quizzes?.questions?.map((question, index) => (
               <div key={index}>
                 <Typography style="h5">
                   {index + 1}. {question.question}

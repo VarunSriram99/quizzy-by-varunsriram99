@@ -6,6 +6,7 @@ class PublicAttemptsController < ApplicationController
   def show
     @user = User.find_by(email: params[:email])
     @questions = @quiz.questions.all
+    @attempt = nil
     if @user
       @attempt = @user.attempts.find_by(quiz_id: @quiz.id)
     end

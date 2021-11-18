@@ -20,4 +20,15 @@ class AttemptedAnswerTest < ActiveSupport::TestCase
     assert_not @attempted_answer.save
     assert_equal ["Answer can't be blank"], @attempted_answer.errors.full_messages
   end
+
+  def test_valid_question_id_and_attempt_id_should_be_present
+    attempted_answer2 = @attempted_answer.dup
+    attempted_answer2.question_id = nil
+    assert_not attempted_answer2.valid?
+    assert_equal ["Question must exist"], attempted_answer2.errors.full_messages
+    attempted_answer2 = @attempted_answer.dup
+    attempted_answer2.attempt_id = nil
+    assert_not attempted_answer2.valid?
+    assert_equal ["Attempt must exist"], attempted_answer2.errors.full_messages
+  end
 end

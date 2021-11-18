@@ -115,7 +115,7 @@ function EditOrCreateQuestion({
   };
 
   useEffect(() => {
-    var optionArray = [];
+    let optionArray = [];
     optionNumbers.map((value, index) => {
       optionValues[index] &&
         optionArray.push({ label: optionValues[index], value: index + 1 });
