@@ -4,6 +4,7 @@ class QuestionsController < ApplicationController
   before_action :authenticate_user_using_x_auth_token
   before_action :load_question, only: %i[update destroy]
   before_action :load_quiz, only: :destroy
+  after_action :nullify_slug, only: :destroy
 
   def create
     @question = Question.new(question_params)
@@ -30,9 +31,6 @@ class QuestionsController < ApplicationController
   def destroy
     authorize @question
     if @question.destroy
-      if @quiz.questions.count == 0
-        nullify_slug
-      end
       render status: :ok, json: { notice: t("successfully_destroyed", entity: "Question") }
     else
       errors = @question.errors.full_messages.to_sentence
@@ -54,8 +52,10 @@ class QuestionsController < ApplicationController
     end
 
     def nullify_slug
-      unless @quiz.update!(slug: nil)
-        render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages }
+      if @quiz.questions.count == 0
+        unless @quiz.update!(slug: nil)
+          render status: :unprocessable_entity, json: { error: @quiz.errors.full_messages }
+        end
       end
     end
 
