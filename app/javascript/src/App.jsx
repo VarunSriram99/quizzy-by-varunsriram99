@@ -36,22 +36,17 @@ const App = () => {
       <HeaderMain isLoggedIn={isLoggedIn} />
       <Switch>
         <Route exact path="/login" component={Login} />
-        <Route exact path="/public/:slug">
-          <PublicLogin />
-        </Route>
-        <Route exact path="/public/:slug/attempts/new">
-          <Attempt />
-        </Route>
-        <Route path="/">
-          <PrivateRoute
-            path="/"
-            redirectRoute="/login"
-            condition={
-              isLoggedIn && localStorage.getItem("role") == "administrator"
-            }
-            component={Main}
-          />
-        </Route>
+        <Route exact path="/public/:slug" component={PublicLogin} />
+        <Route exact path="/public/:slug/attempts/new" component={Attempt} />
+
+        <PrivateRoute
+          path="/"
+          redirectRoute="/login"
+          condition={
+            isLoggedIn && localStorage.getItem("role") == "administrator"
+          }
+          component={Main}
+        />
       </Switch>
     </Router>
   );
