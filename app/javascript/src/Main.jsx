@@ -9,15 +9,9 @@ import ResultsTable from "./Components/Results";
 function Main() {
   return (
     <div>
-      <Route exact path="/">
-        <ListQuizzes />
-      </Route>
-      <Route exact path="/edit/:id">
-        <EditQuiz />
-      </Route>
-      <Route exact path="/results">
-        <ResultsTable />
-      </Route>
+      <Route exact path="/" component={ListQuizzes} />
+      <Route exact path="/edit/:id" component={EditQuiz} />
+      <Route exact path="/results" component={ResultsTable} />
     </div>
   );
 }
