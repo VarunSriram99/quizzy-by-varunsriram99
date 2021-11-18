@@ -2,6 +2,8 @@
 
 class AttemptsController < ApplicationController
   before_action :authenticate_user_using_x_auth_token
+  before_action :load_attempt, only: %i[show update]
+  before_action :calculate_results, only: :update
 
   def index
     @attempts = Attempt.where(submitted: true)
@@ -9,42 +11,39 @@ class AttemptsController < ApplicationController
   end
 
   def show
-    @attempt = Attempt.find_by(id: params[:id])
-    if @attempt.present?
-      render
-    else
-      render status: :not_found, json: { error: t("not_found", entity: "Attempt") }
-    end
+    render
   end
 
-  def create
-    @attempt = Attempt.find_by(id: attempt_params[:attempt_id])
-    unless @attempt.present?
-      render status: :unauthorized, json: { error: t("not_found", entity: "Attempt") }
+  def update
+    @attempt.update!(attempt_params)
+    @attempt.submitted = true
+    if @attempt.save
+      render status: :ok, json: { notice: t("successfully_submitted") }
     else
-      @attempt.attempted_answers = AttemptedAnswer.create(attempt_params[:answers])
-      @attempt.submitted = true
-      calculate_results
-      if @attempt.save
-        render status: :ok, json: { notice: t("successfully_submitted") }
-      else
-        errors = @attempt.errors.full_messages.to_sentence
-        render status: :unprocessable_entity, json: { error: errors.full_messages }
-      end
+      errors = @attempt.errors.full_messages.to_sentence
+      render status: :unprocessable_entity, json: { error: errors.full_messages }
     end
   end
 
   private
 
     def attempt_params
-      params.require(:submitted_answers).permit(:attempt_id, answers: [:question_id, :answer])
+      params.require(:submitted_answers).permit(attempted_answers_attributes: [:question_id, :answer])
+    end
+
+    def load_attempt
+      @attempt = Attempt.find_by(id: params[:id])
+      unless @attempt.present?
+        render status: :unauthorized, json: { error: t("not_found", entity: "Attempt") }
+      end
     end
 
     def calculate_results
       correct_answers = 0
       incorrect_answers = 0
-      attempt_params[:answers].each do |answer|
-        correct_answer = Question.find_by(id: answer[:question_id]).correct_option
+      @questions = Question.all
+      attempt_params[:attempted_answers_attributes].each do |answer|
+        correct_answer = @questions.find_by(id: answer[:question_id]).correct_option
         if correct_answer.to_i == answer[:answer].to_i
           correct_answers = correct_answers + 1
         else

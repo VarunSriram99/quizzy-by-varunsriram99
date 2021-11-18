@@ -59,7 +59,7 @@ function EditQuiz() {
           />
           <Button
             label={data.data.slug ? "Published" : "Publish"}
-            disabled={!!data.data.slug || data.data?.questions.length == 0}
+            disabled={!!data.data.slug || data.data?.questions?.length == 0}
             onClick={() => handlePublish(data.data.id)}
           />
         </div>
@@ -76,7 +76,7 @@ function EditQuiz() {
           </Typography>
         </div>
       )}
-      {data.data?.questions.length == 0 ? (
+      {data.data?.questions?.length == 0 ? (
         <div className="w-screen h-screen flex justify-center items-center">
           <Typography style="h3">You have not created any Questions</Typography>
         </div>

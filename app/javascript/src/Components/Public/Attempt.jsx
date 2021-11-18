@@ -21,21 +21,12 @@ function Attempt() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [quizDetails, setQuizDetails] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
-  useEffect(() => {
-    checkQuiz();
-    if (userInfo.attempt?.submitted) {
-      setIsSubmitted(true);
-    }
-  }, [userInfo]);
   const checkQuiz = async () => {
     try {
-      var data;
-      if (userInfo.attempt?.submitted || isSubmitted) {
-        data = await publicApi.show(slug, userInfo.email);
-      } else {
-        data = await publicApi.show(slug);
-      }
-      data = data["data"];
+      const { data } =
+        userInfo.attempt?.submitted || isSubmitted
+          ? await publicApi.show(slug, userInfo.email)
+          : await publicApi.show(slug);
       setQuizDetails(data);
       if (data.quizzes?.submitted) {
         setIsSubmitted(true);
@@ -54,39 +45,48 @@ function Attempt() {
       window.location.href = window.location.pathname.split("/attempts")[0];
     }
   };
+  useEffect(() => {
+    checkQuiz();
+    if (userInfo.attempt?.submitted) {
+      setIsSubmitted(true);
+    }
+  }, [userInfo]);
+  if (isLoading) {
+    return <CenteredPageloader />;
+  }
 
-  return (
-    <>
-      {isLoading ? (
-        <CenteredPageloader />
-      ) : isLoggedIn ? (
-        isSubmitted ? (
-          <ResultsLanding
-            quizDetails={quizDetails}
-            userInfo={userInfo}
-            checkQuiz={checkQuiz}
-            setIsLoading={setIsLoading}
-          />
-        ) : (
-          <Quiz
-            quizDetails={quizDetails}
-            userInfo={userInfo}
-            setIsSubmitted={setIsSubmitted}
-            checkQuiz={checkQuiz}
-            setIsLoading={setIsLoading}
-          />
-        )
-      ) : (
-        <SignInPage
-          slug={slug}
-          setIsLoggedIn={setIsLoggedIn}
-          setUserInfo={setUserInfo}
+  if (isLoggedIn) {
+    if (isSubmitted) {
+      return (
+        <ResultsLanding
           quizDetails={quizDetails}
+          userInfo={userInfo}
           checkQuiz={checkQuiz}
           setIsLoading={setIsLoading}
         />
-      )}
-    </>
+      );
+    }
+
+    return (
+      <Quiz
+        quizDetails={quizDetails}
+        userInfo={userInfo}
+        setIsSubmitted={setIsSubmitted}
+        checkQuiz={checkQuiz}
+        setIsLoading={setIsLoading}
+      />
+    );
+  }
+
+  return (
+    <SignInPage
+      slug={slug}
+      setIsLoggedIn={setIsLoggedIn}
+      setUserInfo={setUserInfo}
+      quizDetails={quizDetails}
+      checkQuiz={checkQuiz}
+      setIsLoading={setIsLoading}
+    />
   );
 }
 
