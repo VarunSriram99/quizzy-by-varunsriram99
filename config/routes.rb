@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   resources :attempts, only: %i[update show index]
   resources :download_result, only: %i[index show]
   mount ActionCable.server, at: "/cable"
+  get "/request_file" => "download_result#request_file"
+  get "/download_file" => "download_result#download_file"
 
   root "home#index"
   get "*path", to: "home#index", via: :all

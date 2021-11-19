@@ -8,27 +8,35 @@ import * as yup from "yup";
 
 import quizApi from "apis/quiz";
 
-import { formikInitialValues, formikValidationSchema } from "./constants";
+import { formikValidationSchema } from "./constants";
 
-function CreateQuiz({
-  isCreateQuestionOpen,
-  setIsCreateQuestionOpen,
+function CreateOrUpdateQuiz({
+  isCreateOrUpdateQuizOpen,
+  onClose,
   fetchQuiz,
+  id,
+  name,
+  isUpdate,
 }) {
   const handleFormSubmit = async values => {
     try {
-      await quizApi.create({ quiz: values });
+      isUpdate
+        ? await quizApi.update(id, { quiz: values })
+        : await quizApi.create({ quiz: values });
       fetchQuiz();
-      Toastr.success("Quiz was created successfully!");
+      Toastr.success(
+        `Quiz was successfully ${isUpdate ? "updated" : "created"}!`
+      );
     } catch {
-      Toastr.error();
+      Toastr.error(Error("Something went wrong."));
     }
-    setIsCreateQuestionOpen(false);
+    onClose();
   };
   return (
     <Formik
-      initialValues={formikInitialValues}
+      initialValues={{ name }}
       onSubmit={handleFormSubmit}
+      enableReinitialize
       validationSchema={yup.object(formikValidationSchema)}
     >
       {({ submitForm }) => (
@@ -36,11 +44,13 @@ function CreateQuiz({
           <div>
             <Modal
               size="sm"
-              isOpen={isCreateQuestionOpen}
-              onClose={() => setIsCreateQuestionOpen(false)}
+              isOpen={isCreateOrUpdateQuizOpen}
+              onClose={onClose}
             >
               <Modal.Header>
-                <Typography style="h2">Add new quiz</Typography>
+                <Typography style="h2">
+                  {isUpdate ? "Update Quiz" : "Create Quiz"}
+                </Typography>
               </Modal.Header>
               <Modal.Body>
                 <Input
@@ -64,7 +74,7 @@ function CreateQuiz({
                   size="large"
                   style="text"
                   className="ml-2"
-                  onClick={() => setIsCreateQuestionOpen(false)}
+                  onClick={() => onClose()}
                 />
               </Modal.Footer>
             </Modal>
@@ -75,4 +85,4 @@ function CreateQuiz({
   );
 }
 
-export default CreateQuiz;
+export default CreateOrUpdateQuiz;

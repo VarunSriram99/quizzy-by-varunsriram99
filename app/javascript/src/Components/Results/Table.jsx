@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 
-import { useTable } from "react-table";
+import { Up, Down } from "neetoicons";
+import { useSortBy, useTable } from "react-table";
 
 function TableRender({ tableData }) {
   const columns = useMemo(
@@ -30,7 +31,7 @@ function TableRender({ tableData }) {
   );
 
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data: tableData });
+    useTable({ columns, data: tableData }, useSortBy);
 
   return (
     <div className="flex justify-center p-4">
@@ -41,10 +42,14 @@ function TableRender({ tableData }) {
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map(column => (
                   <th
-                    {...column.getHeaderProps()}
+                    {...column.getHeaderProps(column.getSortByToggleProps())}
                     className="text-left border-b-2 p-3 border-black text-lg border"
                   >
-                    {column.render("Header")}
+                    <div className="flex justify-between">
+                      {column.render("Header")}
+                      {column.isSorted &&
+                        (column.isSortedDesc ? <Down /> : <Up />)}
+                    </div>
                   </th>
                 ))}
               </tr>

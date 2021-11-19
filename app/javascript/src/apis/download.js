@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const requestFile = () => axios.get("/download_result");
+const requestFile = () => axios.get("/request_file");
 
 const downloadXLS = () =>
   axios({
-    url: "/download_result/excel",
+    url: "/download_file",
     method: "GET",
     responseType: "arraybuffer",
     headers: { "Content-Type": "blob" },

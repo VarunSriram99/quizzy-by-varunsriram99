@@ -3,10 +3,7 @@ import React, { useState, useEffect } from "react";
 import Logger from "js-logger";
 import { useParams } from "react-router-dom";
 
-import authApi from "apis/auth";
-import { resetAuthTokens } from "apis/axios";
 import publicApi from "apis/public";
-import { clearFromLocalStorage } from "components/helpers/storage";
 
 import SignInPage from "./AttemptQuiz";
 import Quiz from "./AttemptQuiz/Quiz";
@@ -32,12 +29,6 @@ function Attempt() {
         setIsSubmitted(true);
       }
 
-      if (localStorage.getItem("authEmail") != null && !userInfo.email) {
-        authApi.logout();
-        clearFromLocalStorage();
-        resetAuthTokens();
-        window.location.reload();
-      }
       setIsLoading(false);
     } catch (error) {
       Logger.log(error);

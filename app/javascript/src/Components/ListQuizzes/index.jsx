@@ -9,16 +9,33 @@ import fetchQuizzes from "apis/fetchQuizzes";
 import QuizTable from "./QuizTable";
 
 import CenteredPageloader from "../CenteredPageloader";
-import CreateQuiz from "../CreateQuiz";
+import CreateOrUpdateQuiz from "../CreateQuiz/CreateOrUpdateQuiz";
 
 function ListQuizzes() {
   const [quizzesList, setQuizzesList] = useState({ quizzes: [] });
   const [isLoading, setIsLoading] = useState(true);
-  const [isCreateQuestionOpen, setIsCreateQuestionOpen] = useState(false);
+  const [isCreateOrUpdateQuizOpen, setIsCreateOrUpdateQuizOpen] =
+    useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [id, setId] = useState(0);
+  const [name, setName] = useState(1);
 
   const fetchQuiz = async () => {
     const { data } = await fetchQuizzes();
     setQuizzesList(data);
+  };
+
+  const openCreateQuiz = () => {
+    setName(" ");
+    setIsUpdate(false);
+    setId(0);
+    setIsCreateOrUpdateQuizOpen(true);
+  };
+
+  const onClose = () => {
+    setName("");
+    setId(0);
+    setIsCreateOrUpdateQuizOpen(false);
   };
 
   useEffect(() => {
@@ -40,11 +57,18 @@ function ListQuizzes() {
           className="self-end"
           icon={Plus}
           iconPosition="left"
-          onClick={() => setIsCreateQuestionOpen(true)}
+          onClick={() => openCreateQuiz()}
         />
         {quizzesList["quizzes"].length > 0 ? (
           <div>
-            <QuizTable data={quizzesList["quizzes"]} fetchQuiz={fetchQuiz} />
+            <QuizTable
+              data={quizzesList["quizzes"]}
+              fetchQuiz={fetchQuiz}
+              setId={setId}
+              setName={setName}
+              setIsUpdate={setIsUpdate}
+              setIsCreateOrUpdateQuizOpen={setIsCreateOrUpdateQuizOpen}
+            />
           </div>
         ) : (
           <div className="w-screen h-screen flex justify-center items-center">
@@ -52,10 +76,13 @@ function ListQuizzes() {
           </div>
         )}
       </div>
-      <CreateQuiz
-        isCreateQuestionOpen={isCreateQuestionOpen}
-        setIsCreateQuestionOpen={setIsCreateQuestionOpen}
+      <CreateOrUpdateQuiz
+        isCreateOrUpdateQuizOpen={isCreateOrUpdateQuizOpen}
+        onClose={onClose}
         fetchQuiz={fetchQuiz}
+        id={id}
+        name={name}
+        isUpdate={isUpdate}
       />
     </>
   );
