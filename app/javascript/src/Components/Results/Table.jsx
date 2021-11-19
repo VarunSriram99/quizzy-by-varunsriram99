@@ -58,13 +58,11 @@ function TableRender({ tableData }) {
                   {...row.getRowProps()}
                   className="odd:bg-gray-300 hover:bg-gray-400 transition duration-300 border text-lg"
                 >
-                  {row.cells.map(cell => {
-                    return (
-                      <td {...cell.getCellProps()} className="border p-3">
-                        {cell.render("Cell")}
-                      </td>
-                    );
-                  })}
+                  {row.cells.map(cell => (
+                    <td {...cell.getCellProps()} className="border p-3">
+                      {cell.render("Cell")}
+                    </td>
+                  ))}
                 </tr>
               );
             })}

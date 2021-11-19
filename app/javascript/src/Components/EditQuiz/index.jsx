@@ -13,7 +13,7 @@ import CenteredPageloader from "../CenteredPageloader";
 
 function EditQuiz() {
   const { id } = useParams();
-  const [data, setData] = useState({});
+  const [quizData, setQuizquizData] = useState({});
   const [isEdit, setIsEdit] = useState(false);
   const [isCreateOrUpdateQuestionOpen, setIsCreateOrUpdateQuestionOpen] =
     useState(false);
@@ -23,7 +23,8 @@ function EditQuiz() {
   const fetchQuestions = async () => {
     try {
       setIsLoading(true);
-      setData(await quizApi.show(id));
+      const { data } = await quizApi.show(id);
+      setQuizquizData(data);
       setIsLoading(false);
     } catch {
       Toastr.error(Error("Something went wrong!"));
@@ -45,7 +46,7 @@ function EditQuiz() {
   ) : (
     <div>
       <div className="flex m-4 justify-between">
-        <Typography style="h2">{data.data.name}</Typography>
+        <Typography style="h2">{quizData.name}</Typography>
         <div className="space-x-4">
           <Button
             label="Add a New Question"
@@ -58,31 +59,31 @@ function EditQuiz() {
             }}
           />
           <Button
-            label={data.data.slug ? "Published" : "Publish"}
-            disabled={!!data.data.slug || data.data?.questions?.length == 0}
-            onClick={() => handlePublish(data.data.id)}
+            label={quizData.slug ? "Published" : "Publish"}
+            disabled={!!quizData.slug || quizData?.questions?.length == 0}
+            onClick={() => handlePublish(quizData.id)}
           />
         </div>
       </div>
-      {data.data.slug && (
+      {quizData.slug && (
         <div className="flex items-center mx-4">
           <Typography style="h5">Public link:&nbsp;</Typography>
           <Typography className="underline" style="body2">
             <a
-              href={`${window.location.origin}/public/${data.data.slug}`}
+              href={`${window.location.origin}/public/${quizData.slug}`}
               target="_blank"
               rel="noreferrer"
-            >{`${window.location.origin}/public/${data.data.slug}`}</a>
+            >{`${window.location.origin}/public/${quizData.slug}`}</a>
           </Typography>
         </div>
       )}
-      {data.data?.questions?.length == 0 ? (
+      {quizData?.questions?.length == 0 ? (
         <div className="w-screen h-screen flex justify-center items-center">
           <Typography style="h3">You have not created any Questions</Typography>
         </div>
       ) : (
         <ListQuestions
-          questions={data.data?.questions}
+          questions={quizData?.questions}
           fetchQuestions={fetchQuestions}
           setIsCreateOrUpdateQuestionOpen={setIsCreateOrUpdateQuestionOpen}
           setIsEdit={setIsEdit}
@@ -92,7 +93,7 @@ function EditQuiz() {
       <EditOrCreateQuestion
         isCreateOrUpdateQuestionOpen={isCreateOrUpdateQuestionOpen}
         setIsCreateOrUpdateQuestionOpen={setIsCreateOrUpdateQuestionOpen}
-        data={data.data}
+        quizData={quizData.quizData}
         fetchQuestions={fetchQuestions}
         isEdit={isEdit}
         currentQuestion={currentQuestion}

@@ -5,25 +5,35 @@ class QuizPolicy
 
   def initialize(user, quiz)
     @user = user
-  end
-
-  def index?
-    @user.role == "administrator"
+    @quiz = quiz
   end
 
   def create?
-    index?
+    @user.role == "administrator" && @quiz.user_id = @user.id
   end
 
   def update?
-    index?
+    create?
   end
 
   def destroy?
-    index?
+    create?
   end
 
   def show?
-    index?
+    create?
+  end
+
+  class Scope
+    attr_reader :user, :scope
+
+    def initialize(user, scope)
+      @user = user
+      @scope = scope
+    end
+
+    def resolve
+      @user.role == "administrator" && scope.where(user_id: user.id)
+    end
   end
 end

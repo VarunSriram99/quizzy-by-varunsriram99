@@ -77,28 +77,24 @@ function EditOrCreateQuestion({
     let [valid, question, newOptionsArray] = validateQuestion();
     if (!valid) return false;
     try {
-      isEdit
-        ? await questionApi.update(currentQuestion.id, {
-            question: {
-              question: question,
-              options_attributes: newOptionsArray.slice(
-                0,
-                optionNumbers.length
-              ),
-              correct_option: correctAnswer,
-            },
-          })
-        : await questionApi.create({
-            question: {
-              question: question,
-              options_attributes: newOptionsArray.slice(
-                0,
-                optionNumbers.length
-              ),
-              correct_option: correctAnswer,
-              quiz_id: data.id,
-            },
-          });
+      if (isEdit) {
+        await questionApi.update(currentQuestion.id, {
+          question: {
+            question: question,
+            options_attributes: newOptionsArray.slice(0, optionNumbers.length),
+            correct_option: correctAnswer,
+          },
+        });
+      } else {
+        await questionApi.create({
+          question: {
+            question: question,
+            options_attributes: newOptionsArray.slice(0, optionNumbers.length),
+            correct_option: correctAnswer,
+            quiz_id: data.id,
+          },
+        });
+      }
       fetchQuestions();
       Toastr.success(
         isEdit
@@ -120,7 +116,7 @@ function EditOrCreateQuestion({
       optionValues[index] &&
         optionArray.push({ label: optionValues[index], value: index + 1 });
     });
-    setCorrectAnswerOptions([...optionArray]);
+    setCorrectAnswerOptions(optionArray);
   }, [optionNumbers, optionValues]);
 
   useEffect(() => {
@@ -171,22 +167,6 @@ function EditOrCreateQuestion({
           />
           <Typography>Enter the options</Typography>
           {optionNumbers.map((value, key) => {
-            if (key < 2) {
-              return (
-                <div className="flex w-full items-end space-x-2">
-                  <Input
-                    label={`Option ${key + 1}`}
-                    className="w-full"
-                    placeholder={`Enter option ${key + 1}`}
-                    value={optionValues[key]}
-                    error={errors.options?.[key]}
-                    onChange={e => updateOption(e, key)}
-                    required
-                  />
-                </div>
-              );
-            }
-
             return (
               <div className="flex w-full items-end space-x-2">
                 <Input
@@ -198,16 +178,18 @@ function EditOrCreateQuestion({
                   onChange={e => updateOption(e, key)}
                   required
                 />
-                <Button
-                  icon={Minus}
-                  style="danger"
-                  onClick={() => removeOption(key)}
-                />
+                {key >= 2 && (
+                  <Button
+                    icon={Minus}
+                    style="danger"
+                    onClick={() => removeOption(key)}
+                  />
+                )}
               </div>
             );
           })}
           {optionNumbers.length < 4 && (
-            <Button style="link" label="Add more" onClick={() => addMore()} />
+            <Button style="link" label="Add more" onClick={addMore} />
           )}
           <Select
             label="Correct option"

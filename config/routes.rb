@@ -8,7 +8,8 @@ Rails.application.routes.draw do
   resources :public_attempts, only: :show, param: :slug
   resources :users, only: :create
   resources :attempts, only: %i[update show index]
-  resources :download_result, only: :index
+  resources :download_result, only: %i[index show]
+  mount ActionCable.server, at: "/cable"
 
   root "home#index"
   get "*path", to: "home#index", via: :all
