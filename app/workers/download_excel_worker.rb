@@ -17,7 +17,7 @@ class DownloadExcelWorker
         attempt.correct_answers_count, attempt.incorrect_answers_count)
     end
 
-    book.write "#{Rails.root}/result.xls"
+    book.write "result.xls"
     ActionCable.server.broadcast "notification_channel", "Excel complete"
   end
 end
