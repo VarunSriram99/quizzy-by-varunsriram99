@@ -31,6 +31,7 @@ function EditOrCreateQuestion({
     const newOptionNumbersArray = [...optionNumbers];
     newOptionNumbersArray.pop();
     setOptionNumbers([...newOptionNumbersArray]);
+    validateQuestion();
   };
   const updateOption = (event, index) => {
     const newOptionsArray = [...optionValues];
@@ -64,18 +65,16 @@ function EditOrCreateQuestion({
     if (correctAnswer > optionNumbers.length || correctAnswer < 0) {
       updateErrors["correctAnswer"] = "Please select a valid correct option";
     }
-
-    if (Object.keys(updateErrors).length != 0) {
-      setErrors(updateErrors);
-      return [false, "", []];
-    }
-
-    return [true, question, newOptionsArray];
+    setErrors(updateErrors);
+    return Object.keys(updateErrors).length
+      ? [false, "", []]
+      : [true, question, newOptionsArray];
   };
 
   const handleSubmit = async () => {
     let [valid, question, newOptionsArray] = validateQuestion();
     if (!valid) return false;
+    Logger.log("reached here");
     try {
       if (isEdit) {
         await questionApi.update(currentQuestion.id, {
@@ -91,7 +90,7 @@ function EditOrCreateQuestion({
             question: question,
             options_attributes: newOptionsArray.slice(0, optionNumbers.length),
             correct_option: correctAnswer,
-            quiz_id: data.id,
+            quiz_id: data?.id,
           },
         });
       }
@@ -104,7 +103,7 @@ function EditOrCreateQuestion({
       setIsCreateOrUpdateQuestionOpen(false);
       return true;
     } catch (error) {
-      Logger.error(error);
+      Logger.log(error);
       Toastr.error(Error("Something went wrong!"));
       return false;
     }
@@ -162,6 +161,7 @@ function EditOrCreateQuestion({
             value={questionTitle}
             error={errors.question}
             onChange={e => setQuestionTitle(e.target.value)}
+            onKeyUp={validateQuestion}
             autoFocus
             required
           />
@@ -176,13 +176,16 @@ function EditOrCreateQuestion({
                   value={optionValues[key]}
                   error={errors.options && errors.options[key]}
                   onChange={e => updateOption(e, key)}
+                  onKeyUp={validateQuestion}
                   required
                 />
                 {key >= 2 && (
                   <Button
                     icon={Minus}
                     style="danger"
-                    onClick={() => removeOption(key)}
+                    onClick={() => {
+                      removeOption(key);
+                    }}
                   />
                 )}
               </div>
@@ -209,7 +212,10 @@ function EditOrCreateQuestion({
                   }
                 : ""
             }
-            onChange={e => setCorrectAnswer(e.value)}
+            onChange={e => {
+              setCorrectAnswer(e.value);
+              validateQuestion();
+            }}
           />
         </div>
       </Pane.Body>

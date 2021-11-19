@@ -93,7 +93,7 @@ function EditQuiz() {
       <EditOrCreateQuestion
         isCreateOrUpdateQuestionOpen={isCreateOrUpdateQuestionOpen}
         setIsCreateOrUpdateQuestionOpen={setIsCreateOrUpdateQuestionOpen}
-        quizData={quizData.quizData}
+        data={quizData}
         fetchQuestions={fetchQuestions}
         isEdit={isEdit}
         currentQuestion={currentQuestion}

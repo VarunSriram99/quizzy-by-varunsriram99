@@ -6,13 +6,17 @@ import { useHistory } from "react-router";
 import { useTable } from "react-table";
 
 import DeleteQuiz from "../CreateQuiz/DeleteQuiz";
-import UpdateQuiz from "../CreateQuiz/UpdateQuiz";
 
-function QuizTable({ data, fetchQuiz }) {
-  const [isUpdateQuestionOpen, setIsUpdateQuestionOpen] = useState(false);
+function QuizTable({
+  data,
+  fetchQuiz,
+  setIsUpdate,
+  setId,
+  setName,
+  setIsCreateOrUpdateQuizOpen,
+}) {
   const [isDeleteQuizOpen, setIsDeleteQuizOpen] = useState(false);
-  const [id, setId] = useState(-1);
-  const [name, setName] = useState("");
+  const [deletionId, setDeletionId] = useState(0);
   const history = useHistory();
 
   const handleRowClick = (event, rowData) => {
@@ -21,13 +25,8 @@ function QuizTable({ data, fetchQuiz }) {
     history.push(`/edit/${rowData.id}`);
   };
 
-  const onClose = () => {
-    setName("");
-    setIsUpdateQuestionOpen(false);
-  };
-
   const handleDelete = (id, event) => {
-    setId(id);
+    setDeletionId(id);
     setIsDeleteQuizOpen(true);
     event.stopPropagation();
   };
@@ -35,7 +34,8 @@ function QuizTable({ data, fetchQuiz }) {
   const handleEdit = (value, event) => {
     setId(value.value);
     setName(value.row.original.name);
-    setIsUpdateQuestionOpen(true);
+    setIsCreateOrUpdateQuizOpen(true);
+    setIsUpdate(true);
     event.stopPropagation();
   };
 
@@ -121,17 +121,10 @@ function QuizTable({ data, fetchQuiz }) {
           })}
         </tbody>
       </table>
-      <UpdateQuiz
-        isUpdateQuestionOpen={isUpdateQuestionOpen}
-        onClose={onClose}
-        id={id}
-        name={name}
-        fetchQuiz={fetchQuiz}
-      />
       <DeleteQuiz
         isDeleteQuizOpen={isDeleteQuizOpen}
         setIsDeleteQuizOpen={setIsDeleteQuizOpen}
-        id={id}
+        id={deletionId}
         fetchQuiz={fetchQuiz}
       />
     </div>

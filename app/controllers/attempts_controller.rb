@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class AttemptsController < ApplicationController
-  before_action :authenticate_user_using_x_auth_token
+  before_action :authenticate_user_using_x_auth_token, only: :index
   before_action :load_attempt, only: %i[show update]
   before_action :calculate_results, only: :update
 
