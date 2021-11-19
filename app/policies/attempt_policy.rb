@@ -5,9 +5,19 @@ class AttemptPolicy
 
   def initialize(user, attempt)
     @user = user
+    @attempt = attempt
   end
 
-  def index?
-    @user.role == "administrator"
+  class Scope
+    attr_reader :user, :scope
+
+    def initialize(user, scope)
+      @user = user
+      @scope = scope
+    end
+
+    def resolve
+      @user.role == "administrator" && scope.where(submitted: true)
+    end
   end
 end

@@ -38,8 +38,8 @@ function SignInPage({
         setUserInfo(data);
         setToLocalStorage({
           authToken: data.authentication_token,
-          email: data.email,
-          userId: data.id,
+          authEmail: data.email,
+          authUserId: data.id,
           userName: `${data.first_name} ${data.last_name}`,
           role: data.role,
         });

@@ -16,8 +16,8 @@ function Login() {
       const response = await authApi.login({ login: values });
       setToLocalStorage({
         authToken: response.data.authentication_token,
-        email: values.email,
-        userId: response.data.id,
+        authEmail: values.email,
+        authUserId: response.data.id,
         userName: `${response.data.first_name} ${response.data.last_name}`,
         role: response.data.role,
       });

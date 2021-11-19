@@ -5,25 +5,22 @@ class QuestionPolicy
 
   def initialize(user, question)
     @user = user
-  end
-
-  def index?
-    @user.role == "administrator"
+    @question = question
   end
 
   def create?
-    index?
+    @user.role == "administrator" && @question.quiz.user.id == @user.id
   end
 
   def update?
-    index?
+    create?
   end
 
   def destroy?
-    index?
+    create?
   end
 
   def show?
-    index?
+    create?
   end
 end

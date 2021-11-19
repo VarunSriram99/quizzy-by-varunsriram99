@@ -1,9 +1,14 @@
-const setToLocalStorage = ({ authToken, email, userId, userName, role }) => {
-  localStorage.setItem("authToken", authToken);
-  localStorage.setItem("authEmail", email);
-  localStorage.setItem("authUserId", userId);
-  localStorage.setItem("userName", userName);
-  localStorage.setItem("role", role);
+const setToLocalStorage = userData => {
+  const storageItems = [
+    "authToken",
+    "authEmail",
+    "authUserId",
+    "userName",
+    "role",
+  ];
+  storageItems.map(item => {
+    localStorage.setItem(item, userData[item]);
+  });
 };
 
 const getFromLocalStorage = key => {
@@ -11,11 +16,7 @@ const getFromLocalStorage = key => {
 };
 
 const clearFromLocalStorage = () => {
-  localStorage.removeItem("authToken");
-  localStorage.removeItem("authEmail");
-  localStorage.removeItem("authUserId");
-  localStorage.removeItem("userName");
-  localStorage.removeItem("role");
+  localStorage.clear();
 };
 
 export { setToLocalStorage, getFromLocalStorage, clearFromLocalStorage };

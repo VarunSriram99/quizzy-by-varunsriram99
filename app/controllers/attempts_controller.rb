@@ -6,8 +6,7 @@ class AttemptsController < ApplicationController
   before_action :calculate_results, only: :update
 
   def index
-    @attempts = Attempt.where(submitted: true)
-    authorize @attempts
+    @attempts = policy_scope(Attempt)
   end
 
   def show

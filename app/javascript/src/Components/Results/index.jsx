@@ -6,7 +6,8 @@ import { PageLoader } from "neetoui";
 import { Toastr, Typography, Button } from "neetoui";
 
 import attemptsApi from "apis/attempt";
-import downloadXLS from "apis/download";
+import downloadApi from "apis/download";
+import socketConnection from "apis/websocket";
 
 import TableRender from "./Table";
 
@@ -24,24 +25,23 @@ function ResultsTable() {
   };
   const [isDownload, setIsDownload] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [downloadURL, setDownloadURL] = useState("");
   useEffect(() => {
     fetchResult();
   }, []);
   const fileDownload = async () => {
     try {
-      const response = await downloadXLS();
-      const url = URL.createObjectURL(new Blob([response.data]));
-      setDownloadURL(url);
-      setIsLoading(false);
+      await downloadApi.requestFile();
+      socketConnection(setIsLoading);
     } catch (error) {
       Toastr.error(Error("Something went wrong!"));
       Logger.log(error);
     }
   };
-  const handleDownloadClick = () => {
+  const handleDownloadClick = async () => {
+    const response = await downloadApi.downloadXLS();
+    const url = URL.createObjectURL(new Blob([response.data]));
     const link = document.createElement("a");
-    link.href = downloadURL;
+    link.href = url;
     link.setAttribute("download", "result.xls");
     document.body.appendChild(link);
     link.click();

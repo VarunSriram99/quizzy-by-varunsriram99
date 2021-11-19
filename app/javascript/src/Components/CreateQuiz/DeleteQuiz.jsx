@@ -24,7 +24,7 @@ function DeleteQuiz({ isDeleteQuizOpen, setIsDeleteQuizOpen, id, fetchQuiz }) {
         onClose={() => setIsDeleteQuizOpen(false)}
         title="Delete quiz"
         message="Are you sure you want to delete the quiz?"
-        onSubmit={() => handleDelete()}
+        onSubmit={handleDelete}
       />
     </div>
   );

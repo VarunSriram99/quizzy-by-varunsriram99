@@ -6,8 +6,7 @@ class QuizzesController < ApplicationController
   before_action :create_slug, only: :update, if: -> { quiz_params[:published] }
 
   def index
-    @quiz = Quiz.where(user_id: @current_user.id)
-    authorize @quiz
+    @quiz = policy_scope(Quiz)
   end
 
   def create
