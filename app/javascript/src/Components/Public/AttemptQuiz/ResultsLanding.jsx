@@ -50,8 +50,8 @@ function ResultsLanding({ quizDetails, userInfo, checkQuiz }) {
               <Typography style="h4" className="col-span-2">
                 {value.question}
               </Typography>
-              {value.options.map(option => (
-                <>
+              {value.options.map((option, id) => (
+                <React.Fragment key={id}>
                   <div>Option {option.option_number}</div>
                   <div className="flex items-center col-span-2">
                     {option.option}
@@ -74,7 +74,7 @@ function ResultsLanding({ quizDetails, userInfo, checkQuiz }) {
                       </div>
                     )}
                   </div>
-                </>
+                </React.Fragment>
               ))}
             </div>
           </div>

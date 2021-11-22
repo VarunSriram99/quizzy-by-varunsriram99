@@ -166,31 +166,29 @@ function EditOrCreateQuestion({
             required
           />
           <Typography>Enter the options</Typography>
-          {optionNumbers.map((value, key) => {
-            return (
-              <div className="flex w-full items-end space-x-2">
-                <Input
-                  label={`Option ${key + 1}`}
-                  className="w-full"
-                  placeholder={`Enter option ${key + 1}`}
-                  value={optionValues[key]}
-                  error={errors.options && errors.options[key]}
-                  onChange={e => updateOption(e, key)}
-                  onKeyUp={validateQuestion}
-                  required
+          {optionNumbers.map((value, key) => (
+            <div className="flex w-full items-end space-x-2">
+              <Input
+                label={`Option ${key + 1}`}
+                className="w-full"
+                placeholder={`Enter option ${key + 1}`}
+                value={optionValues[key]}
+                error={errors.options && errors.options[key]}
+                onChange={e => updateOption(e, key)}
+                onKeyUp={validateQuestion}
+                required
+              />
+              {key >= 2 && (
+                <Button
+                  icon={Minus}
+                  style="danger"
+                  onClick={() => {
+                    removeOption(key);
+                  }}
                 />
-                {key >= 2 && (
-                  <Button
-                    icon={Minus}
-                    style="danger"
-                    onClick={() => {
-                      removeOption(key);
-                    }}
-                  />
-                )}
-              </div>
-            );
-          })}
+              )}
+            </div>
+          ))}
           {optionNumbers.length < 4 && (
             <Button style="link" label="Add more" onClick={addMore} />
           )}

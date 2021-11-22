@@ -25,26 +25,32 @@ function ResultsTable() {
   };
   const [isDownload, setIsDownload] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadingMessage, setLoadingMessage] = useState("Starting process.");
   useEffect(() => {
     fetchResult();
   }, []);
   const fileDownload = async () => {
     try {
       await downloadApi.requestFile();
-      socketConnection(setIsLoading);
+      socketConnection(setIsLoading, setLoadingMessage);
     } catch (error) {
       Toastr.error(Error("Something went wrong!"));
       Logger.log(error);
     }
   };
   const handleDownloadClick = async () => {
-    const response = await downloadApi.downloadXLS();
-    const url = URL.createObjectURL(new Blob([response.data]));
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", "result.xls");
-    document.body.appendChild(link);
-    link.click();
+    try {
+      const response = await downloadApi.downloadXLS();
+      const url = URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "result.xls");
+      document.body.appendChild(link);
+      link.click();
+    } catch (error) {
+      Toastr.error(Error("Something went wrong!"));
+      Logger.log(error);
+    }
   };
   return (
     <div>
@@ -67,7 +73,7 @@ function ResultsTable() {
       ) : (
         <div className="flex flex-col justify-center items-center m-10 w-full h-screen -mt-24">
           {isLoading ? (
-            <PageLoader text="Please wait while your file is being generated." />
+            <PageLoader text={loadingMessage} />
           ) : (
             <div className="flex flex-col space-y-5">
               <Typography style="h4">
