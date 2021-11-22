@@ -126,3 +126,5 @@ yarn-debug.log*
 
 # Ignore generated excel-file
 *.xls
+localhost.crt
+localhost.key

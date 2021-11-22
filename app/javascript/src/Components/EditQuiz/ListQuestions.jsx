@@ -45,8 +45,8 @@ function ListQuestions({
                 onClick={() => handleDelete(question.id)}
               />
             </div>
-            {question.options.map(option => (
-              <>
+            {question.options.map((option, id) => (
+              <React.Fragment key={id}>
                 <div>Option {option.option_number}</div>
                 <div className="flex items-center col-span-3">
                   {option.option}
@@ -60,7 +60,7 @@ function ListQuestions({
                     </div>
                   )}
                 </div>
-              </>
+              </React.Fragment>
             ))}
           </div>
         </div>
