@@ -18,7 +18,7 @@ function ListQuizzes() {
     useState(false);
   const [isUpdate, setIsUpdate] = useState(false);
   const [id, setId] = useState(0);
-  const [name, setName] = useState(1);
+  const [name, setName] = useState("");
 
   const fetchQuiz = async () => {
     const { data } = await fetchQuizzes();

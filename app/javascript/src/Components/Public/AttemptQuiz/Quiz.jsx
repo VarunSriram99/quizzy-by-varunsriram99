@@ -8,7 +8,7 @@ import publicApi from "apis/public";
 
 function Quiz({ quizDetails, userInfo, setIsSubmitted, checkQuiz }) {
   const [isSubmittable, setIsSubmittable] = useState(false);
-  let formikInitialValues = {};
+  const formikInitialValues = {};
   const handleFormSubmit = async values => {
     const submittedData = [];
     for (const key in values) {
@@ -28,9 +28,9 @@ function Quiz({ quizDetails, userInfo, setIsSubmitted, checkQuiz }) {
     }
   };
   const enableSubmit = values => {
-    let selections = Object.values(values);
-    for (let selection of selections) {
-      if (selection.trim() == "") return;
+    const selections = Object.values(values);
+    for (const selection of selections) {
+      if (selection.length == 0) return;
     }
     setIsSubmittable(true);
   };

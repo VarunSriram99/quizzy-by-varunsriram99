@@ -1,14 +1,7 @@
 const setToLocalStorage = userData => {
-  const storageItems = [
-    "authToken",
-    "authEmail",
-    "authUserId",
-    "userName",
-    "role",
-  ];
-  storageItems.map(item => {
-    localStorage.setItem(item, userData[item]);
-  });
+  for (const key in userData) {
+    localStorage.setItem(key, userData[key]);
+  }
 };
 
 const getFromLocalStorage = key => {

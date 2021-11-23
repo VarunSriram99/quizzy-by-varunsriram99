@@ -72,9 +72,8 @@ function EditOrCreateQuestion({
   };
 
   const handleSubmit = async () => {
-    let [valid, question, newOptionsArray] = validateQuestion();
+    const [valid, question, newOptionsArray] = validateQuestion();
     if (!valid) return false;
-    Logger.log("reached here");
     try {
       if (isEdit) {
         await questionApi.update(currentQuestion.id, {
@@ -110,7 +109,7 @@ function EditOrCreateQuestion({
   };
 
   useEffect(() => {
-    let optionArray = [];
+    const optionArray = [];
     optionNumbers.map((value, index) => {
       optionValues[index] &&
         optionArray.push({ label: optionValues[index], value: index + 1 });

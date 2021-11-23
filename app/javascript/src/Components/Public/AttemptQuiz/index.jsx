@@ -1,6 +1,7 @@
 import React from "react";
 
 import { Formik, Form } from "formik";
+import Logger from "js-logger";
 import { Button, Toastr, Typography } from "neetoui";
 import { Input } from "neetoui/formik";
 import * as yup from "yup";
@@ -38,7 +39,6 @@ function SignInPage({
         setToLocalStorage({
           authToken: data.authentication_token,
           authEmail: data.email,
-          authUserId: data.id,
           userName: `${data.first_name} ${data.last_name}`,
           role: data.role,
         });
@@ -47,6 +47,7 @@ function SignInPage({
       }
       setIsLoading(false);
     } catch (error) {
+      Logger.log(error);
       Toastr.error(Error("Something went wrong! :("));
     }
   };
