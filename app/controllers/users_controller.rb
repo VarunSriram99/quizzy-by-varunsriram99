@@ -13,7 +13,7 @@ class UsersController < ApplicationController
     def create_or_update_user
       @user = User.find_by(email: user_params[:email].downcase)
       unless @user
-        @user = @user = User.create!(user_params.merge(password: "welcome", password_confirmation: "welcome"))
+        @user = User.create!(user_params.merge(password: "welcome", password_confirmation: "welcome"))
       end
     end
 

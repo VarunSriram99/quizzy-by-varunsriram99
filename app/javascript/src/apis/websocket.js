@@ -5,7 +5,10 @@ const socketConnection = (setIsLoading, setLoadingMessage) => {
   socket.onopen = () => {
     Logger.log("connected");
     socket.send(
-      '{"command":"subscribe","identifier":"{\\"channel\\":\\"NotificationChannel\\"}"}'
+      JSON.stringify({
+        command: "subscribe",
+        identifier: JSON.stringify({ channel: "NotificationChannel" }),
+      })
     );
     socket.onmessage = ({ data }) => {
       if (

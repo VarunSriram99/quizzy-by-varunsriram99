@@ -34,8 +34,9 @@ function ResultsTable() {
       await downloadApi.requestFile();
       socketConnection(setIsLoading, setLoadingMessage);
     } catch (error) {
-      Toastr.error(Error("Something went wrong!"));
+      Toastr.error(Error("Could not initiate file generation."));
       Logger.log(error);
+      setIsDownload(false);
     }
   };
   const handleDownloadClick = async () => {
